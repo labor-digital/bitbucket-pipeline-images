@@ -1,0 +1,76 @@
+name: Build and Push - All
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  push:
+    branches:
+      - master
+
+jobs:
+  buildAndPush:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      # build-docker-and-push-ecr
+      - name: Build the Docker Base image
+        run: cd build-docker-and-push-ecr && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:build-docker-and-push-ecr
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:build-docker-and-push-ecr
+
+      # composer-install
+      - name: Build the Docker Base image
+        run: cd composer-install && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:composer-install
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:composer-install
+
+      # conventional-release
+      - name: Build the Docker Base image
+        run: cd conventional-release && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:conventional-release
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:conventional-release
+
+      # deploy-docker-to-ecs
+      - name: Build the Docker Base image
+        run: cd deploy-docker-to-ecs && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:deploy-docker-to-ecs
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:deploy-docker-to-ecs
+
+      # deployment-tools
+      - name: Build the Docker Base image
+        run: cd deployment-tools && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:deployment-tools
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:deployment-tools
+
+      # deploy-via-update-cloudformation-parameter
+      - name: Build the Docker Base image
+        run: cd deploy-via-update-cloudformation-parameter && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:deploy-via-update-cloudformation-parameter
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:deploy-via-update-cloudformation-parameter
+
+      # inject-aws-ecs-startup-script
+      - name: Build the Docker Base image
+        run: cd inject-aws-ecs-startup-script && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
+
+      # node-environment
+      - name: Build the Docker Base image
+        run: cd node-environment && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-environment
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:node-environment
+
+      # npm-run-build
+      - name: Build the Docker Base image
+        run: cd npm-run-build && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:npm-run-build
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:npm-run-build
+
+      # sentry-release
+      - name: Build the Docker Base image
+        run: cd sentry-release && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:sentry-release
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:sentry-release

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Prepare environment variables
+echo "Checking environment variables..."
+NPM_RUN_BUILD_REGISTRY_URL=${NPM_RUN_BUILD_REGISTRY_URL:-$NPM_DEFAULT_REGISTRY_URL}
+NPM_RUN_BUILD_REGISTRY_EMAIL=${NPM_RUN_BUILD_REGISTRY_EMAIL:-$NPM_DEFAULT_REGISTRY_EMAIL}
+NPM_RUN_BUILD_REGISTRY_USER=${NPM_RUN_BUILD_REGISTRY_USER:-$NPM_DEFAULT_REGISTRY_USER}
+NPM_RUN_BUILD_REGISTRY_PW=${NPM_RUN_BUILD_REGISTRY_PW:-$NPM_DEFAULT_REGISTRY_PW}
+
+echo "registry=https://$NPM_RUN_BUILD_REGISTRY_URL/" > ~/.npmrc
+echo "always-auth=true" >> ~/.npmrc
+echo "//$NPM_RUN_BUILD_REGISTRY_URL/:_password=\"$NPM_RUN_BUILD_REGISTRY_PW\"" >> ~/.npmrc
+echo "//$NPM_RUN_BUILD_REGISTRY_URL/:username=$NPM_RUN_BUILD_REGISTRY_USER" >> ~/.npmrc
+echo "//$NPM_RUN_BUILD_REGISTRY_URL/:email=$NPM_RUN_BUILD_REGISTRY_EMAIL" >> ~/.npmrc
+echo "//$NPM_RUN_BUILD_REGISTRY_URL/:always-auth=true" >> ~/.npmrc
+
+cd $NPM_RUN_BUILD_WORKING_DIR
+npm install
+npm run build
