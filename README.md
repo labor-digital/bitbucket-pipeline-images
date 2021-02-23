@@ -111,6 +111,10 @@ In this example the following Env vars are set:
 This image could be used to make a composer install.
 The following Env vars need to/may be set:
 
+#### IMPORTANT - Composer V2 ####
+By default, we will use composer v1 to perform the installation. If you want to work with version 2 of composer,
+replace the image tag to use: labor-prod-pipelines:composer-2-install instead.
+
 **Required:**
 
 - COMPOSER_INSTALL_SOURCE_DIR (This is the directory where the source code is at the beginning, so $COMPOSER_INSTALL_SOURCE_DIR/composer.json needs to be present)
