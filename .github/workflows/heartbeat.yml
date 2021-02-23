@@ -20,6 +20,6 @@ jobs:
           date +%s > heartbeat.txt
           git config --global user.name 'Beating Heart'
           git config --global user.email 'heartbeat@labor.digital'
-          git add
+          git add heartbeat.txt
           git commit -am "Heartbeat"
           git push
