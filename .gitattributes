@@ -1,0 +1,4 @@
+* text=auto
+*.bashrc text eol=lf
+*.bashrc-extension text eol=lf
+*.sh text eol=lf

@@ -1,0 +1,16 @@
+{
+  "name": "@labor-digital/conventional-release",
+  "version": "1.0.0",
+  "description": "Scripts for creating conventional-commit-messages and releasing applications ",
+  "author": "LABOR GmbH <info@labor.tools>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commander": "2.19.0",
+    "conventional-changelog-angular": "^5.0.12",
+    "cz-conventional-changelog": "2.1.0",
+    "git-semver-tags": "2.0.2",
+    "got": "9.6.0",
+    "semver": "5.6.0",
+    "standard-version": "5.0.1"
+  }
+}

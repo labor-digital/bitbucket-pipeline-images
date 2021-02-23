@@ -4,6 +4,8 @@
 .unison*
 heartbeat.txt
 
+conventional-release/src/node_modules
+
 # IDEA Code Style
 .idea/*
 !.idea/copyright/

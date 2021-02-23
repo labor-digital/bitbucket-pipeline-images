@@ -35,16 +35,10 @@ jobs:
         run: docker push labordigital/bitbucket-pipeline-images:composer-2-install
 
       # conventional-release
-      #- name: Build and push conventional-release
-      #  run: |
-      #    cd conventional-release
-      #    "NPM_REGISTRY_URL=$NPM_DEFAULT_REGISTRY_URL" > ./.env.template
-      #    "NPM_REGISTRY_EMAIL=$NPM_DEFAULT_REGISTRY_EMAIL" >> ./.env.template
-      #    "NPM_REGISTRY_USER=$NPM_DEFAULT_REGISTRY_USER" >> ./.env.template
-      #    "NPM_REGISTRY_PW=$NPM_DEFAULT_REGISTRY_PW" >> ./.env.template
-      #    docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:conventional-release
-      #- name: Push the image
-      #  run: docker push labordigital/bitbucket-pipeline-images:conventional-release
+      - name: Build and push conventional-release
+        run: cd conventional-release && docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:conventional-release
+      - name: Push the image
+        run: docker push labordigital/bitbucket-pipeline-images:conventional-release
 
       # deploy-docker-to-ecs
       - name: Build and push deploy-docker-to-ecs
