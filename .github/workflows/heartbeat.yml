@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create report file
-        run: date +%s > heartbeat.txt
-      - name: Commit report
+      - name: Beat
         run: |
+          date +%s > heartbeat.txt
           git config --global user.name 'Beating Heart'
           git config --global user.email 'heartbeat@labor.digital'
+          git add
           git commit -am "Heartbeat"
           git push
