@@ -17,5 +17,8 @@ RUN npm config set unsafe-perm true \
 
 COPY src /opt/conventional-release
 
+RUN cd /opt/conventional-release/src \
+	&& npm install
+
 COPY release.sh /opt/release.sh
 RUN chmod +x /opt/release.sh

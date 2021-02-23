@@ -383,8 +383,7 @@ The following flags are available:
       release:
         -
           step: &release
-            image: 
-           	  name: labordigital/bitbucket-pipeline-images:conventional-release 
+            image: labordigital/bitbucket-pipeline-images:conventional-release 
             name: Release
           script:
             - source /opt/release.sh --git-push --composer-publish --npm-publish
@@ -440,8 +439,7 @@ Should be called as the last possible script, after you deployed your script to 
       sentryPrepareRelease:
         -
           step: &sentryPrepareRelease
-            image: 
-           	  name: labordigital/bitbucket-pipeline-images:sentry-release 
+            image: labordigital/bitbucket-pipeline-images:sentry-release 
             name: "Sentry.io: Prepare Release"
           script:
             - source /opt/sentry-prepare-release.sh
@@ -453,8 +451,7 @@ Should be called as the last possible script, after you deployed your script to 
       sentryDeployRelease:
         -
           step: &sentryDeployRelease
-            image: 
-           	  name: labordigital/bitbucket-pipeline-images:sentry-release 
+            image: labordigital/bitbucket-pipeline-images:sentry-release 
             name: "Sentry.io: Deploy Release"
           script:
             - source /opt/sentry-release.sh
