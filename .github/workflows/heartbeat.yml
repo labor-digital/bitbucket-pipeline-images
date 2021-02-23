@@ -1,0 +1,22 @@
+# A simple heartbeat workflow that triggers a commit every few days automatically
+# to stop github from disabling our schedules
+name: Heartbeat
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+#    - cron: '0 2 */5 * *'
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create report file
+        run: date +%s > heartbeat.txt
+      - name: Commit report
+        run: |
+          git config --global user.name 'Beating Heart'
+          git config --global user.email 'heartbeat@labor.digital'
+          git commit -am "Heartbeat"
+          git push
