@@ -2,6 +2,7 @@
 .settings/
 .env
 .unison*
+heartbeat.txt
 
 # IDEA Code Style
 .idea/*
