@@ -1,7 +1,5 @@
 # Some Docker images you can use in your Bitbucket pipelines #
-
 This repo contains several docker images which you can use for different build steps in your Bitbucket pipelines yaml
-
 
 
 ## build-docker-and-push-ecr ##
@@ -31,7 +29,7 @@ In this example the following Env vars are set:
       default:
         - step:
             image:
-              name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:build-docker-and-push-ecr
+              name: labordigital/bitbucket-pipeline-images:build-docker-and-push-ecr
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -84,7 +82,7 @@ In this example the following Env vars are set:
       default:
         - step:
             image:
-              name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:deploy-docker-to-ecs
+              name: labordigital/bitbucket-pipeline-images:deploy-docker-to-ecs
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -142,7 +140,7 @@ In this example the following Env vars are set:
       default:
         - step:
             image:
-              name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:composer-install
+              name: labordigital/bitbucket-pipeline-images:composer-install
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -186,7 +184,7 @@ In this example the following Env vars are set:
       default:
         - step:
             image:
-              name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:inject-aws-ecs-startup-script
+              name: labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -240,7 +238,7 @@ In this example the following Env vars are set:
       default:
         - step:
             image:
-            name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:npm-run-build
+            name: labordigital/bitbucket-pipeline-images:npm-run-build
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -296,7 +294,7 @@ The same as /opt/npm-run-script.sh but without the automatic login
       default:
         - step:
             image:
-            name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:node-environment
+            name: labordigital/bitbucket-pipeline-images:node-environment
               aws:
                 access-key: $AWS_ACCESS_KEY_ID
                 secret-key: $AWS_SECRET_ACCESS_KEY
@@ -316,7 +314,7 @@ Small debian image which contains curl, zip and and open-ssh client
       deploy:
         -
           step: &deploy
-            image: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:deployment-tools
+            image: labordigital/bitbucket-pipeline-images:deployment-tools
             name: Deploy
             deployment: production
           script:
@@ -334,7 +332,7 @@ Small debian image which contains curl, zip and and open-ssh client
       -
         step: &ghostInspectorTest
           image: 
-          	name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:deployment-tools
+          	name: labordigital/bitbucket-pipeline-images:deployment-tools
             aws:
               access-key: $AWS_ACCESS_KEY_ID
               secret-key: $AWS_SECRET_ACCESS_KEY  
@@ -345,7 +343,7 @@ Small debian image which contains curl, zip and and open-ssh client
 ```
 
 ## conventional-release ##
-Contains the infrastructure to execute the [@labor/commit-and-release](https://bitbucket.org/labor-digital/labor-js-commit-and-release/src/master/#readme) npm package.
+Contains the infrastructure to an automatic release cycle based on [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) and [angular's commit guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). Both provide tools to keep the git history readable, generate version numbers and changelogs automatically. 
 It expects your package.json / composer.json and CHANGELOG.md to reside in the repository's root directory.
 
 ##### Config variables #####
@@ -359,9 +357,26 @@ but you may override them with the following OPTIONAL environment vars.
 - GIT_PUSH_BACK_OAUTH_SECRET (_DEFAULT: "${GIT_OAUTH_SECRET}"_, which is set account-wide)
 - GIT_PUSH_BACK_REPO_OWNER (_DEFAULT: "${BITBUCKET_REPO_OWNER}"_, which is set in all pipelines)
 - GIT_PUSH_BACK_REPO_SLUG (_DEFAULT: "${BITBUCKET_REPO_SLUG}"_, which is set in all pipelines)
+- NPM_REGISTRY_URL (_DEFAULT: "${NPM_DEFAULT_REGISTRY_URL}"_, which is set account-wide)
+- NPM_REGISTRY_USER (_DEFAULT: "${NPM_DEFAULT_REGISTRY_USER}"_, which is set account-wide)
+- NPM_REGISTRY_PW (_DEFAULT: "${NPM_DEFAULT_REGISTRY_PW}}"_, which is set account-wide)
+- NPM_REGISTRY_EMAIL (_DEFAULT: "${NPM_DEFAULT_REGISTRY_EMAIL}"_, which is set account-wide)
 
 ##### /opt/release.sh - Arguments #####
-The switches of /opt/release.sh are identical with the latest version of [@labor/commit-and-release](https://bitbucket.org/labor-digital/labor-js-commit-and-release/src/master/#readme).
+Flags can be used to preconfigure the release step. In general, they are meant to configure the release without any means of interaction, but work in a local installation as well (If a flag is set the representing wizard input will be skipped.).
+The following flags are available: 
+```
+  --skip-commit         prevents standard version from creating a new git commit
+  --skip-tag            prevents standard version from creating a new git tag
+  --git-push            pushes the changes (back) into to the git repository
+  --npm-publish         publishes the package to the npm repository
+  --composer-publish    publishes the package to the satis repository
+  --remove-release-tag  removes the git tag called "release" from the git history. Useful if you want to use it to trigger yur pipelines with it
+  --release-as <type>   can be used to manually bump the version to patch, minor or major
+  --branch <branch>     the branch where to commit the changes to. Default is \"master\"
+
+  --ci-integration      DEPRECATED - no longer does anything
+```
 
 ##### bitbucket-pipelines.yml #####
 ```
@@ -369,13 +384,10 @@ The switches of /opt/release.sh are identical with the latest version of [@labor
         -
           step: &release
             image: 
-           	  name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:conventional-release
-			  aws:
-			    access-key: $AWS_ACCESS_KEY_ID
-			    secret-key: $AWS_SECRET_ACCESS_KEY  
+           	  name: labordigital/bitbucket-pipeline-images:conventional-release 
             name: Release
           script:
-            - source /opt/release.sh --ci-integration --git-push --composer-publish --npm-publish
+            - source /opt/release.sh --git-push --composer-publish --npm-publish
           artifacts:
             - src/CHANGELOG.md
 ```
@@ -429,10 +441,7 @@ Should be called as the last possible script, after you deployed your script to 
         -
           step: &sentryPrepareRelease
             image: 
-           	  name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:sentry-release
-			  aws:
-			    access-key: $AWS_ACCESS_KEY_ID
-			    secret-key: $AWS_SECRET_ACCESS_KEY  
+           	  name: labordigital/bitbucket-pipeline-images:sentry-release 
             name: "Sentry.io: Prepare Release"
           script:
             - source /opt/sentry-prepare-release.sh
@@ -445,10 +454,7 @@ Should be called as the last possible script, after you deployed your script to 
         -
           step: &sentryDeployRelease
             image: 
-           	  name: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:sentry-release
-			  aws:
-			    access-key: $AWS_ACCESS_KEY_ID
-			    secret-key: $AWS_SECRET_ACCESS_KEY  
+           	  name: labordigital/bitbucket-pipeline-images:sentry-release 
             name: "Sentry.io: Deploy Release"
           script:
             - source /opt/sentry-release.sh
