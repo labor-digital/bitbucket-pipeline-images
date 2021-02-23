@@ -18,14 +18,9 @@
 const program = require("commander");
 const ReleaseAction = require("./ReleaseAction");
 
-// Register global options
-program.option("--debug", "enables debug mode");
-program.option("--dry-run", "only shows the changes without doing anything");
-
-// Prepare command definition
 program
-	.command("release")
-	.description("can be used to release your changes by bumping the version and publishing the sources")
+	.option("--debug", "enables debug mode")
+	.option("--dry-run", "only shows the changes without doing anything")
 	.option("--skip-commit", "prevents standard version from creating a new git commit")
 	.option("--skip-tag", "prevents standard version from creating a new git tag")
 	.option("--git-push", "pushes the changes (back) into to the git repository")
@@ -34,10 +29,6 @@ program
 	.option("--remove-release-tag", "removes the git tag called \"release\" from the git history. Useful if you want to use it to trigger yur pipelines with it")
 	.option("--release-as <type>", "can be used to manually bump the version to patch, minor or major", /major|minor|patch/)
 	.option("--branch <branch>", "the branch where to commit the changes to. Default is \"master\"")
-
 	.option("--ci-integration", "DEPRECATED: does nothing")
-
-	.action(ReleaseAction.handle);
-
-// Start the program
-program.parse(process.argv);
+	.action(ReleaseAction.handle)
+	.parse(process.argv);
