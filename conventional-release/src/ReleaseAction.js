@@ -29,8 +29,8 @@ module.exports = class ReleaseAction {
 	static handle(cmd) {
 		const config = {
 			satisRequestTimeout: 60 * 10 * 1000,
-			debug: cmd.parent.debug === true,
-			dryRun: cmd.parent.dryRun === true,
+			debug: cmd.debug === true,
+			dryRun: cmd.dryRun === true,
 			branch: (typeof cmd.branch === "undefined" ? "master" : cmd.branch)
 		};
 		const releaseElements = PathFinder.findReleaseElements(true);
