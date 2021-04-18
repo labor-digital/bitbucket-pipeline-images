@@ -28,11 +28,7 @@ In this example the following Env vars are set:
     pipelines:
       default:
         - step:
-            image:
-              name: labordigital/bitbucket-pipeline-images:build-docker-and-push-ecr
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:build-docker-and-push-ecr
             name: Build and Push
             caches:
               - docker
@@ -81,11 +77,7 @@ In this example the following Env vars are set:
     pipelines:
       default:
         - step:
-            image:
-              name: labordigital/bitbucket-pipeline-images:deploy-docker-to-ecs
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:deploy-docker-to-ecs
             name: Deploy to production
             services:
               - docker
@@ -139,11 +131,7 @@ In this example the following Env vars are set:
     pipelines:
       default:
         - step:
-            image:
-              name: labordigital/bitbucket-pipeline-images:composer-install
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:composer-install
             name: Composer Install
             caches:
               - composer
@@ -183,11 +171,7 @@ In this example the following Env vars are set:
     pipelines:
       default:
         - step:
-            image:
-              name: labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
             name: Inject AWS ECS Startup Script
           	script:
               - export INJECT_AWS_ECS_STARTUP_SCRIPT_SSH_KEY=$BITBUCKET_DEFAULT_SSH_KEY
@@ -237,11 +221,7 @@ In this example the following Env vars are set:
 	pipelines:
       default:
         - step:
-            image:
-            name: labordigital/bitbucket-pipeline-images:npm-run-build
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:npm-run-build
             name: Build Assets
             caches:
               - node-custom
@@ -293,11 +273,7 @@ The same as /opt/npm-run-script.sh but without the automatic login
 	pipelines:
       default:
         - step:
-            image:
-            name: labordigital/bitbucket-pipeline-images:node-environment
-              aws:
-                access-key: $AWS_ACCESS_KEY_ID
-                secret-key: $AWS_SECRET_ACCESS_KEY
+            image: labordigital/bitbucket-pipeline-images:node-environment
             name: Build Assets
             caches:
               - node
@@ -331,11 +307,7 @@ Small debian image which contains curl, zip and and open-ssh client
     ghostInspector:
       -
         step: &ghostInspectorTest
-          image: 
-          	name: labordigital/bitbucket-pipeline-images:deployment-tools
-            aws:
-              access-key: $AWS_ACCESS_KEY_ID
-              secret-key: $AWS_SECRET_ACCESS_KEY  
+          image: labordigital/bitbucket-pipeline-images:deployment-tools
           name: Ghost Inspector Test
           script:
             - curl "https://api.ghostinspector.com/v1/suites/$GI_SUITE/execute/?apiKey=$GI_API_KEY&immediate=1&region=eu-central-1"
