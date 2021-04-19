@@ -264,6 +264,12 @@ Performs the login to our verdaccio npm repository, switches the working directo
 **/opt/npm-run-script-without-login.sh <script-name-and-options>**
 The same as /opt/npm-run-script.sh but without the automatic login
 
+#### IMPORTANT - Versions ####
+All images contain the same scripts and setup, but differ in their installed node version number
+
+* `node-environment` comes with node version 10
+* `node-12-environment` comes with node version 12
+
 #### Example ####
 
 ##### CAUTION: The bitbucket-pipelines cache "node" only works if your directly working in the project root. Otherwise you have to define your own cache. #####
