@@ -5,13 +5,20 @@ This repo contains several docker images which you can use for different build s
 ## build-docker-and-push-ecr ##
 
 This image could be used to build a docker image and push it to AWS ECR.
-The following Env vars need to be set:
+The following Env vars need to/may be set:
 
-- BUILD_AND_PUSH_REGION (e.g. eu-central-1)
-- BUILD_AND_PUSH_IMAGE (e.g. your-registry/your-image:your-tag)
-- BUILD_AND_PUSH_DOCKER_FILE (default: "Dockerfile", e.g. "Dockerfile.dev")
+**Required:**
+
 - AWS_ACCESS_KEY_ID (in our environment this one is set account-wide, so you don´t need to set it)
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide, so you don´t need to set it)
+
+**Optional:**
+
+- BUILD_AND_PUSH_REGION (_DEFAULT: "${$AWS_ECR_DEFAULT_REGION}"_, which is set account-wide)
+- BUILD_AND_PUSH_TAG (_DEFAULT: "${$AWS_ECR_DEFAULT_TAG_PREFIX$BITBUCKET_COMMIT}"_, AWS_ECR_DEFAULT_TAG_PREFIX is set account-wide, BITBUCKET_COMMIT is set in all pipelines automatically)
+- BUILD_AND_PUSH_TAG_LATEST (_DEFAULT: "latest"_)
+- BUILD_AND_PUSH_IMAGE (_DEFAULT: "${$AWS_ECR_DEFAULT_URL/$PROJECT_NAME:$BUILD_AND_PUSH_TAG}"_, AWS_ECR_DEFAULT_URL is set account-wide, PROJECT_NAME is set per project)
+- BUILD_AND_PUSH_DOCKER_FILE (_DEFAULT: "Dockerfile"_)
 
 #### Example ####
 
@@ -35,12 +42,7 @@ In this example the following Env vars are set:
             services:
               - docker
             script:
-              - export BUILD_AND_PUSH_REGION=$AWS_ECR_DEFAULT_REGION
-              - export BUILD_AND_PUSH_IMAGE=$AWS_ECR_DEFAULT_URL/$PROJECT_NAME:$BITBUCKET_COMMIT
-              - cat /opt/build-docker-and-push-ecr.sh
               - source /opt/build-docker-and-push-ecr.sh
-
-
 
 ## deploy-docker-to-ecs ##
 
