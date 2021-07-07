@@ -32,4 +32,5 @@ out=$(echo $out|tr -d '\n'|tr -d '\r')
 docker build -f $BUILD_AND_PUSH_DOCKER_FILE -t $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG -t $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG_LATEST $out .
 
 echo "Pushing image..."
-docker push $BUILD_AND_PUSH_REPO --all-tags
+# Should there ever be issues add the  --all-tags after the "push" keyword
+docker push $BUILD_AND_PUSH_REPO
