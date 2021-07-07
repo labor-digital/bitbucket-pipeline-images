@@ -32,10 +32,13 @@ out=$(echo $out|tr -d '\n'|tr -d '\r')
 docker build -f $BUILD_AND_PUSH_DOCKER_FILE -t $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG -t $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG_LATEST $out .
 
 echo "Pushing image..."
-SERVER_VERSION=$(docker version -f "{{.Server.Version}}")
-SERVER_VERSION_MAJOR=$(echo "$SERVER_VERSION"| cut -d'.' -f 1)
+DOCKER_VERSION=$(docker version -f "{{.Server.Version}}")
+DOCKER_VERSION_MAJOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 1)
+DOCKER_VERSION_MINOR=$(echo "$DOCKER_VERSION"| cut -d'.' -f 2)
+echo "Pushing with docker version: $DOCKER_VERSION..."
 
-if [ "${SERVER_VERSION_MAJOR}" -ge 20 ]; then
+if [ "${DOCKER_VERSION_MAJOR}" -ge 20 ]  && \
+   [ "${DOCKER_VERSION_MINOR}" -ge 10 ]; then
   docker push --all-tags $BUILD_AND_PUSH_REPO
 else
   docker push $BUILD_AND_PUSH_REPO
