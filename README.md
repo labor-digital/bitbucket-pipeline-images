@@ -15,9 +15,8 @@ The following Env vars need to/may be set:
 **Optional:**
 
 - BUILD_AND_PUSH_REGION (_DEFAULT: "${$AWS_ECR_DEFAULT_REGION}"_, which is set account-wide)
-- BUILD_AND_PUSH_TAG (_DEFAULT: "${$AWS_ECR_DEFAULT_TAG_PREFIX$BITBUCKET_COMMIT}"_, AWS_ECR_DEFAULT_TAG_PREFIX is set account-wide, BITBUCKET_COMMIT is set in all pipelines automatically)
 - BUILD_AND_PUSH_TAG_LATEST (_DEFAULT: "latest"_)
-- BUILD_AND_PUSH_IMAGE (_DEFAULT: "${$AWS_ECR_DEFAULT_URL/$PROJECT_NAME:$BUILD_AND_PUSH_TAG}"_, AWS_ECR_DEFAULT_URL is set account-wide, PROJECT_NAME is set per project)
+- BUILD_AND_PUSH_IMAGE (_DEFAULT: "${$AWS_ECR_DEFAULT_URL/$PROJECT_NAME:$AWS_ECR_DEFAULT_TAG_PREFIX$BITBUCKET_COMMIT}"_, AWS_ECR_DEFAULT_URL and AWS_ECR_DEFAULT_TAG_PREFIX are set account-wide, PROJECT_NAME is set per project, BITBUCKET_COMMIT is set in all pipelines automatically)
 - BUILD_AND_PUSH_DOCKER_FILE (_DEFAULT: "Dockerfile"_)
 
 #### Example ####
