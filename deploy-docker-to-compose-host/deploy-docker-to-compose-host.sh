@@ -25,7 +25,6 @@ echo "  [+] Creating .env file"
 
 # Add required files to zip
 echo "  [+] Packing zip"
-echo "      -> .env"
 zip "$DEPLOY_ARCHIVE_NAME" .env
 
 if [ -f "docker-compose.$DEPLOY_PROJECT_ENV.yml" ]; then
@@ -34,7 +33,6 @@ if [ -f "docker-compose.$DEPLOY_PROJECT_ENV.yml" ]; then
 
   if [ -f "docker-compose.yml" ]; then
     zip "$DEPLOY_ARCHIVE_NAME" docker-compose.yml
-    echo "      -> docker-compose.yml"
     else
       echo "  [!] Missing a docker-compose.yml file in the repository!"
       exit 1
