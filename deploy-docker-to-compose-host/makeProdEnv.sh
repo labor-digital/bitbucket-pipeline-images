@@ -18,26 +18,40 @@ out=""
 if [ -e .env.template ]; then
   for LINE in `cat .env.template`; do
     if [[ $LINE =~ $emptyLineReg ]]; then continue; fi
-    # Ignore lines that have an empty value
     if [[ $LINE =~ $emptyValueReg ]]; then continue; fi
 
     out+="$LINE
 "
   done
+  echo "  [+] .env.template contents added"
 else
   echo "  [?] No .env.template found, skip..."
+fi
+
+# Read the .env.app.template file
+if [ -e .env.app.template ]; then
+  for LINE in `cat .env.app.template`; do
+    if [[ $LINE =~ $emptyLineReg ]]; then continue; fi
+    if [[ $LINE =~ $emptyValueReg ]]; then continue; fi
+
+    out+="$LINE
+"
+  done
+  echo "  [+] .env.app.template contents added"
+else
+  echo "  [?] No .env.app.template found, skip..."
 fi
 
 # Read .env.prod file
 if [ -e ".env.$projectEnv" ]; then
 	for LINE in `cat .env.$projectEnv`; do
     if [[ $LINE =~ $emptyLineReg ]]; then continue; fi
-    # Ignore lines that have an empty value
     if [[ $LINE =~ $emptyValueReg ]]; then continue; fi
 
     out+="$LINE
 "
 	done
+  echo "  [+] .env.$projectEnv contents added"
 else
   echo "  [?] No .env.$projectEnv found, skip..."
 fi
