@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -z "$1" ];  then
-        echo "  [!] No argument supplied, this script expects the project-env to run."
-        exit 1
+  echo "  [!] No argument supplied, this script expects the project-env to run."
+  exit 1
 fi
 
 projectEnv=$1

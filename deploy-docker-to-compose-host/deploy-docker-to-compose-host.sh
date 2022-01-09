@@ -55,9 +55,17 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   mkdir -p $DEPLOY_PROJECT_NAME
   rm -rf $DEPLOY_PROJECT_NAME/{*,.*}
 "
+if [ "$?" = 255 ] ; then
+	echo "  [!] Failed preparing deployment folder"
+	exit 1
+fi
 
 echo "  [+] Copy archive to deployment folder"
 scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR$DEPLOY_PROJECT_NAME"
+if ![ "$?" -eq "0" ]; then
+	echo "  [!] Failed to copy the archive"
+	exit 1
+fi
 
 echo "  [+] Unpacking and pulling deployment"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
@@ -70,5 +78,9 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   docker-compose up -d
   $DEPLOY_AFTER_SCRIPT
 "
+if [ "$?" = 255 ] ; then
+	echo "  [!] Failed to unpack, pull or deploy"
+	exit 1
+fi
 
 echo "[>] Deployment done."
