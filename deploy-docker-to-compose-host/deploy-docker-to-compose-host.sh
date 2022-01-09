@@ -62,7 +62,7 @@ if [ "$?" = 255 ] ; then
 fi
 
 echo "  [+] Copy archive to deployment folder"
-scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR$DEPLOY_PROJECT_NAME"
+scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME"
 if ![ "$?" -eq "0" ]; then
 	echo "  [!] Failed to copy the archive"
 	exit 1
@@ -70,8 +70,7 @@ fi
 
 echo "  [+] Unpacking and pulling deployment"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
-  cd $DEPLOY_DOCKER_DIR
-  cd $DEPLOY_PROJECT_NAME
+  cd $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME
   unzip $DEPLOY_ARCHIVE_NAME
   rm -rf $DEPLOY_ARCHIVE_NAME
   (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
