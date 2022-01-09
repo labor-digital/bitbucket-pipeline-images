@@ -5,7 +5,7 @@ if [ -z "$1" ];  then
         exit 1
 fi
 
-projectEnv = $1
+projectEnv=$1
 
 # Remove current env file
 rm -f .env
