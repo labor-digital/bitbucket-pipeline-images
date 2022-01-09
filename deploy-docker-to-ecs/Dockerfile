@@ -2,7 +2,7 @@ FROM python:2.7-alpine
 
 MAINTAINER LABOR digital <info@labor.digital>
 
-LABEL description="Labor Digital Bitbucket Pipelines: Build docker image and push to AWS ECR"
+LABEL description="Labor Digital Bitbucket Pipelines: Deploy docker image on AWS ECS"
 
 RUN pip install --upgrade pip awscli
 
