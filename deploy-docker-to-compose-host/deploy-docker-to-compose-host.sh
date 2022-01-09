@@ -63,7 +63,7 @@ fi
 
 echo "  [+] Copy archive to deployment folder"
 scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME"
-if ![ "$?" -eq "0" ]; then
+if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed to copy the archive"
 	exit 1
 fi
