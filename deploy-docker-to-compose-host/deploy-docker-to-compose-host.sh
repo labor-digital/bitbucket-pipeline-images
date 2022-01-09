@@ -42,7 +42,7 @@ if [ -f "docker-compose.$DEPLOY_PROJECT_ENV.yml" ]; then
 fi
 
 # Add additional files to the zip
-if [ -z "$DEPLOY_ADDITIONAL_FILES" ]; else
+if ! [ -z "$DEPLOY_ADDITIONAL_FILES" ]; then
   for i in ${DEPLOY_ADDITIONAL_FILES//,/ }
   do
       zip "$DEPLOY_ARCHIVE_NAME" "$i"
