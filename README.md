@@ -97,6 +97,51 @@ In this example the following Env vars are set:
 
 ## deploy-docker-to-compose-host
 
+Image that builds on-top of the (deployment-tools)[#deployment-tools] image and is designed to
+deploy built docker-images onto a prepared host server through SSH.
+
+The host is expected to have a working docker, docker-compose, SSH and "unzip" installed.
+By default, each deployed project will get its own sub-directory in the "/02_docker" folder.
+If you need to run a login, you can create a script called /opt/docker-login.sh which will be executed
+every time a deployment is rolled out. Furthermore, you should provide a dedicated user called "deployment"
+which contains the SSH public-key of the bitbucket pipeline runner.
+
+You can create a specific docker-compose.$DEPLOY_PROJECT_ENV.yml variant that will be transferred to the host.
+The .env.template and .env.$DEPLOY_PROJECT_ENV will be merged into an .env file which will be transferred to the host as well.
+
+**Required:**
+- DEPLOY_SSH_HOST (The host name to deploy to)
+
+**Optional:**
+- DEPLOY_DOCKER_DIR (_DEFAULT: "/02_docker"_, The directory on the host machine where to put the project folder)
+- DEPLOY_DOCKER_LOGIN_SCRIPT (_DEFAULT: "/opt/docker-login.sh", The script to refresh the docker-login before deployment)
+- DEPLOY_PROJECT_ENV (_DEFAULT: "prod"_, The deployment project env. Useful for staging and prod variants on the same host)
+- DEPLOY_PROJECT_NAME (_DEFAULT: "$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_ENV"_, The name of the project folder to create)
+- DEPLOY_SSH_USER (_DEFAULT_: "deployment", The SSH user to connect to on the host)
+- DEPLOY_SSH_PORT (_DEFAULT: "22", The SSH port on the host to connect to)
+- DEPLOY_ADDITIONAL_FILES (A comma separated list of files that should be transferred to the host server)
+- DEPLOY_AFTER_SCRIPT (A shell script to execute on the host machine after the deployment took place)
+- DEPLOY_ARCHIVE_NAME (_DEFAULT: "deployment-$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_NAME.zip"_, Name of the transfer archive)
+
+**Additional .env vars**
+You can add additional environment variables to the .env file while it is created by defining them like:
+`ADD_PROD_ENV_VARIABLE_NAME=value` which will lead to the following line in the .env file `VARIABLE_NAME=value`.
+As you can see, the `ADD_PROD_ENV_` prefix is dropped automatically.
+
+##### bitbucket-pipelines.yml
+    pipelines:
+      default:
+        - step:
+            image: labordigital/bitbucket-pipeline-images:deploy-docker-to-compose-host
+            name: Deploy to production
+            services:
+              - docker
+            trigger: manual
+            deployment: production
+            script:
+              - export DEPLOY_SSH_HOST=ssh.your-host.com
+              - source /opt/deploy-docker-to-compose-host.sh
+
 ## composer-install
 
 This image could be used to make a composer install.
