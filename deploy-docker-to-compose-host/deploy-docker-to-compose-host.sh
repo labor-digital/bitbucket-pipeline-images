@@ -53,9 +53,9 @@ fi
 echo "  [+] Preparing deployment folder ($DEPLOY_SSH_USER) on $DEPLOY_SSH_HOST:$DEPLOY_SSH_PORT"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   mkdir -p $DEPLOY_DOCKER_DIR
-  && cd $DEPLOY_DOCKER_DIR
-  && mkdir -p $DEPLOY_PROJECT_NAME
-  && rm -rf $DEPLOY_PROJECT_NAME/{*,.*}
+  cd $DEPLOY_DOCKER_DIR
+  mkdir -p $DEPLOY_PROJECT_NAME
+  rm -rf $DEPLOY_PROJECT_NAME/{*,.*}
 "
 
 echo "  [+] Copy archive to deployment folder"
@@ -64,13 +64,13 @@ scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST
 echo "  [+] Unpacking and pulling deployment"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   cd $DEPLOY_DOCKER_DIR
-  && cd $DEPLOY_PROJECT_NAME
-  && unzip $DEPLOY_ARCHIVE_NAME
-  && rm -rf $DEPLOY_ARCHIVE_NAME
-  && (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
-  && docker-compose pull
-  && docker-compose up -d
-  && $DEPLOY_AFTER_SCRIPT
+  cd $DEPLOY_PROJECT_NAME
+  unzip $DEPLOY_ARCHIVE_NAME
+  rm -rf $DEPLOY_ARCHIVE_NAME
+  (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
+  docker-compose pull
+  docker-compose up -d
+  $DEPLOY_AFTER_SCRIPT
 "
 
 echo "[>] Deployment done."
