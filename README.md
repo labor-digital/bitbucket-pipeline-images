@@ -1,8 +1,8 @@
-# Some Docker images you can use in your Bitbucket pipelines #
+# Some Docker images you can use in your Bitbucket pipelines
 This repo contains several docker images which you can use for different build steps in your Bitbucket pipelines yaml
 
 
-## build-docker-and-push-ecr ##
+## build-docker-and-push-ecr
 
 This image could be used to build a docker image and push it to AWS ECR.
 The following Env vars need to/may be set:
@@ -19,7 +19,7 @@ The following Env vars need to/may be set:
 - BUILD_AND_PUSH_IMAGE (_DEFAULT: "${$AWS_ECR_DEFAULT_URL/$PROJECT_NAME:$AWS_ECR_DEFAULT_TAG_PREFIX$BITBUCKET_COMMIT}"_, AWS_ECR_DEFAULT_URL and AWS_ECR_DEFAULT_TAG_PREFIX are set account-wide, PROJECT_NAME is set per project, BITBUCKET_COMMIT is set in all pipelines automatically)
 - BUILD_AND_PUSH_DOCKER_FILE (_DEFAULT: "Dockerfile"_)
 
-#### Example ####
+#### Example
 
 In this example the following Env vars are set:
 
@@ -29,7 +29,7 @@ In this example the following Env vars are set:
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide)
 - PROJECT_NAME (this one is set in the project, e.g. adobe-adaa-showcase)
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
     pipelines:
       default:
@@ -43,7 +43,7 @@ In this example the following Env vars are set:
             script:
               - source /opt/build-docker-and-push-ecr.sh
 
-## deploy-docker-to-ecs ##
+## deploy-docker-to-ecs
 
 This image could be used to deploy a docker image on AWS ECS.
 The following Env vars need to be set:
@@ -59,7 +59,7 @@ The following Env vars need to be set:
 - AWS_ACCESS_KEY_ID (in our environment this one is set account-wide, so you don´t need to set it)
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide, so you don´t need to set it)
 
-#### Example ####
+#### Example
 
 In this example the following Env vars are set:
 
@@ -73,7 +73,7 @@ In this example the following Env vars are set:
 - AWS_ECS_SERVICE (this one is set in the project, e.g. service-ado-ada-adm-p-Service)
 - AWS_ECS_TASK (this one is set in the project, e.g. service-ado-ada-adm-p-Task)
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
     pipelines:
       default:
@@ -95,14 +95,14 @@ In this example the following Env vars are set:
               - export DEPLOY_TO_ECS_ECS_SERVICE=$AWS_ECS_SERVICE
               - source /opt/deploy-docker-to-ecs.sh
 
+## deploy-docker-to-compose-host
 
-
-## composer-install ##
+## composer-install
 
 This image could be used to make a composer install.
 The following Env vars need to/may be set:
 
-#### IMPORTANT - Composer V2 ####
+#### IMPORTANT - Composer V2
 By default, we will use composer v1 to perform the installation. If you want to work with version 2 of composer,
 replace the image tag to use: `labordigital/bitbucket-pipeline-images:composer-2-install` instead.
 
@@ -117,7 +117,7 @@ replace the image tag to use: `labordigital/bitbucket-pipeline-images:composer-2
 - COMPOSER_INSTALL_KNOWN_HOSTS (_DEFAULT: "${BITBUCKET_DEFAULT_KNOWN_HOSTS}"_, which is set account-wide)
 - COMPOSER_INSTALL_DESTINATION_DIR (_DEFAULT: "${COMPOSER_INSTALL_SOURCE_DIR}"_, which is the directory where the code is copied with all composer-dependencies)
 
-#### Example ####
+#### Example
 
 In this example the following Env vars are set:
 
@@ -127,7 +127,7 @@ In this example the following Env vars are set:
 - AWS_ACCESS_KEY_ID (in our environment this one is set account-wide)
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide)
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
     pipelines:
       default:
@@ -146,9 +146,7 @@ In this example the following Env vars are set:
             artifacts:
               - src/vendor/**
 
-
-
-## inject-aws-ecs-startup-script ##
+## inject-aws-ecs-startup-script
 
 This image is used to get the startup script which is needed for AWS ECS into the production image.
 The following Env vars need to be set:
@@ -157,7 +155,7 @@ The following Env vars need to be set:
 - INJECT_AWS_ECS_STARTUP_SCRIPT_KNOWN_HOSTS (e.g. $BITBUCKET_DEFAULT_KNOWN_HOSTS, which is set account-wide)
 - INJECT_AWS_ECS_STARTUP_SCRIPT_GIT_INFRASTRUCTURE (e.g. adobe-aela-submissionsite.infrastructure, Git-Infrastructure-Repo where we want to fetch the startup-script)
 
-#### Example ####
+#### Example
 
 In this example the following Env vars are set:
 
@@ -167,7 +165,7 @@ In this example the following Env vars are set:
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide)
 - PROJECT_GIT_INFRASTRUCTURE (This one is set to adobe-aela-submissionsite.infrastructure in our example-project)
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
     pipelines:
       default:
@@ -184,7 +182,7 @@ In this example the following Env vars are set:
 
 
 
-## npm-run-build ##
+## npm-run-build
 
 This image could be used to build your assets with "npm run build".
 The following Env vars need to/may be set:
@@ -200,7 +198,7 @@ The following Env vars need to/may be set:
 - NPM_RUN_BUILD_REGISTRY_USER (_DEFAULT: "${NPM_DEFAULT_REGISTRY_USER}"_, which is set account-wide)
 - NPM_RUN_BUILD_REGISTRY_PW (_DEFAULT: "${NPM_DEFAULT_REGISTRY_PW}", which is set account-wide)
 
-#### Example ####
+#### Example
 
 In this example the following Env vars are set:
 
@@ -212,9 +210,9 @@ In this example the following Env vars are set:
 - AWS_ACCESS_KEY_ID (in our environment this one is set account-wide)
 - AWS_SECRET_ACCESS_KEY (in our environment this one is set account-wide)
 
-##### CAUTION: The bitbucket-pipelines cache "node" only works if your directly working in the project root. Otherwise you have to define your own cache. In our case here "node-custom" #####
+**CAUTION: The bitbucket-pipelines cache "node" only works if your directly working in the project root. Otherwise you have to define your own cache. In our case here "node-custom"**
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
 	definitions:
 	  caches:
@@ -238,7 +236,7 @@ In this example the following Env vars are set:
               - src/webroot/js/root.js
               
               
-## node-environment ##
+## node-environment
 
 This image provides you a basic node.js environment you can use to run your scripts in.
 It is currently based on node 10 (2019-03-19 lts) and comes with two helper scripts preinstalled.
@@ -255,7 +253,7 @@ The following Env vars need to/may be set:
 
 - NODE_WORKING_DIR (_DEFAULT: "${BITBUCKET_CLONE_DIR}"_, which is set in all pipelines)
 
-#### Scripts ####
+#### Scripts
 **/opt/npm-login.sh**
 Performs the login to our verdaccio npm repository.
 
@@ -265,17 +263,17 @@ Performs the login to our verdaccio npm repository, switches the working directo
 **/opt/npm-run-script-without-login.sh <script-name-and-options>**
 The same as /opt/npm-run-script.sh but without the automatic login
 
-#### IMPORTANT - Versions ####
+#### IMPORTANT - Versions
 All images contain the same scripts and setup, but differ in their installed node version number
 
 * `node-environment` comes with node version 10
 * `node-12-environment` comes with node version 12
 
-#### Example ####
+#### Example
 
-##### CAUTION: The bitbucket-pipelines cache "node" only works if your directly working in the project root. Otherwise you have to define your own cache. #####
+**CAUTION: The bitbucket-pipelines cache "node" only works if your directly working in the project root. Otherwise you have to define your own cache.**
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 
 	pipelines:
       default:
@@ -289,10 +287,10 @@ All images contain the same scripts and setup, but differ in their installed nod
               - source /opt/npm-run-script.sh test
 
               
-## deployment-tools ##
+## deployment-tools
 Small debian image which contains curl, zip and and open-ssh client
 
-##### bitbucket-pipelines.yml - SSH #####
+##### bitbucket-pipelines.yml - SSH
 ```
       deploy:
         -
@@ -309,7 +307,7 @@ Small debian image which contains curl, zip and and open-ssh client
               execute"
 ```
 
-##### bitbucket-pipelines.yml - CURL #####
+##### bitbucket-pipelines.yml - CURL
 ```
     ghostInspector:
       -
@@ -321,11 +319,11 @@ Small debian image which contains curl, zip and and open-ssh client
 
 ```
 
-## conventional-release ##
+## conventional-release
 Contains the infrastructure to an automatic release cycle based on [Conventional Changelog](https://github.com/conventional-changelog/conventional-changelog) and [angular's commit guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). Both provide tools to keep the git history readable, generate version numbers and changelogs automatically. 
 It expects your package.json / composer.json and CHANGELOG.md to reside in the repository's root directory.
 
-##### Config variables #####
+##### Config variables
 By default the image will take our account environment variables,
 but you may override them with the following OPTIONAL environment vars.
 
@@ -341,7 +339,7 @@ but you may override them with the following OPTIONAL environment vars.
 - NPM_REGISTRY_PW (_DEFAULT: "${NPM_DEFAULT_REGISTRY_PW}}"_, which is set account-wide)
 - NPM_REGISTRY_EMAIL (_DEFAULT: "${NPM_DEFAULT_REGISTRY_EMAIL}"_, which is set account-wide)
 
-##### /opt/release.sh - Arguments #####
+##### /opt/release.sh - Arguments
 Flags can be used to preconfigure the release step. In general, they are meant to configure the release without any means of interaction, but work in a local installation as well (If a flag is set the representing wizard input will be skipped.).
 The following flags are available: 
 ```
@@ -357,7 +355,7 @@ The following flags are available:
   --ci-integration      DEPRECATED - no longer does anything
 ```
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 ```
       release:
         -
@@ -370,7 +368,7 @@ The following flags are available:
             - src/CHANGELOG.md
 ```
 
-## sentry-release ##
+## sentry-release
 Contains the required scripts to prepare a new release for [sentry.io](https://sentry.io/). Sentry is an error/log aggregator that
 can be implemented either in the backend, frontend or both environments. There are two ways to use sentry.
 First the simple way where you just create a sentry project and start logging errors with their sdk.
@@ -389,7 +387,7 @@ the value of bitbucket's $BITBUCKET_REPO_SLUG environment variable (which is als
 The first script will provide the ${BITBUCKET_CLONE_DIR}/sentry-configuration-file.json for other steps.
 So make sure you run this step before your other pipeline steps that might depend on it.
 
-##### Config variables #####
+##### Config variables
 Most of the configuration is done using our repository variables,
 but there are still some required environment variables you have to set.
 
@@ -405,7 +403,7 @@ but there are still some required environment variables you have to set.
 - SENTRY_PROJECT (_DEFAULT: "${BITBUCKET_REPO_SLUG}"_, the name of the project to create the release on. Matches the repository name by default)
 - SENTRY_CONFIG_FILE_LOCATION (_DEFAULT: "${BITBUCKET_CLONE_DIR}/sentry-configuration-file.json"_, holds the compiled information for other build steps to use)
 
-#### Scripts ####
+#### Scripts
 **/opt/sentry-prepare-release.sh**
 Should be called as first pipeline script. It will register a new sentry release and connect the git commits with it.
 It will also provide a global configuration file as artifact for other build steps.
@@ -413,7 +411,7 @@ It will also provide a global configuration file as artifact for other build ste
 **/opt/sentry-release.js**
 Should be called as the last possible script, after you deployed your script to production.
 
-##### bitbucket-pipelines.yml #####
+##### bitbucket-pipelines.yml
 ```
       sentryPrepareRelease:
         -
