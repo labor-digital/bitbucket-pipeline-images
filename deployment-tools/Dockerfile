@@ -6,7 +6,7 @@ FROM ubuntu:latest
 
 MAINTAINER LABOR digital <info@labor.digital>
 
-LABEL description="LABOR GmbH - Bitbucket Pipelines - Deployment Tools"
+LABEL description="Labor Digital Bitbucket Pipelines: Deployment Tools"
 
 # Install open ssh
 RUN apt-get update && apt-get install openssh-client -y
