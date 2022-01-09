@@ -313,6 +313,7 @@ All images contain the same scripts and setup, but differ in their installed nod
 
 * `node-environment` comes with node version 10
 * `node-12-environment` comes with node version 12
+* `node-14-environment` comes with node version 14
 
 #### Example
 
@@ -333,7 +334,7 @@ All images contain the same scripts and setup, but differ in their installed nod
 
               
 ## deployment-tools
-Small debian image which contains curl, zip and and open-ssh client
+Small debian image which contains curl, zip and open-ssh client
 
 ##### bitbucket-pipelines.yml - SSH
 ```
