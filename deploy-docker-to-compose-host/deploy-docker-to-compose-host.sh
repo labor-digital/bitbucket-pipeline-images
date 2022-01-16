@@ -33,13 +33,12 @@ zip "$DEPLOY_ARCHIVE_NAME" .env
 if [ -f "docker-compose.$DEPLOY_PROJECT_ENV.yml" ]; then
   rm -rf docker-compose.yml
   cp "docker-compose.$DEPLOY_PROJECT_ENV.yml" docker-compose.yml
-
-  if [ -f "docker-compose.yml" ]; then
-    zip "$DEPLOY_ARCHIVE_NAME" docker-compose.yml
-    else
-      echo "  [!] Missing a docker-compose.yml file in the repository!"
-      exit 1
-  fi
+fi
+if [ -f "docker-compose.yml" ]; then
+  zip "$DEPLOY_ARCHIVE_NAME" docker-compose.yml
+  else
+    echo "  [!] Missing a docker-compose.yml file in the repository!"
+    exit 1
 fi
 
 # Add additional files to the zip
