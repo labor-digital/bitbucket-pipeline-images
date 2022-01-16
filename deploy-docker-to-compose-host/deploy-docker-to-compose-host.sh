@@ -43,7 +43,7 @@ if [ -f "docker-compose.$DEPLOY_PROJECT_ENV.yml" ]; then
 fi
 
 # Add additional files to the zip
-if ! [ -z "$DEPLOY_ADDITIONAL_FILES" ]; then
+if [ ! -z "$DEPLOY_ADDITIONAL_FILES" ]; then
   for i in ${DEPLOY_ADDITIONAL_FILES//,/ }
   do
       zip "$DEPLOY_ARCHIVE_NAME" "$i"
@@ -71,12 +71,14 @@ if ! [ "$?" -eq "0" ]; then
 fi
 
 DYN_SCRIPT=""
-if ! [ -z "$DEPLOY_SERVER_ENV_FILE" ]; then
+if [ ! -z "$DEPLOY_SERVER_ENV_FILE" ]; then
+  echo "  [?] Will attach contents of $DEPLOY_SERVER_ENV_FILE to $DEPLOY_DOCKER_DIR/.env..."
   DYN_SCRIPT="
 cat $DEPLOY_SERVER_ENV_FILE >> $DEPLOY_DOCKER_DIR/.env"
 fi
 
-if ! [ -z "$DEPLOY_DOCKER_COMPOSE_OPTIONS" ]; then
+if [ ! -z "$DEPLOY_DOCKER_COMPOSE_OPTIONS" ]; then
+  echo "  [?] Will use custom docker-compose options: $DEPLOY_DOCKER_COMPOSE_OPTIONS"
   $DEPLOY_DOCKER_COMPOSE_OPTIONS = " $DEPLOY_DOCKER_COMPOSE_OPTIONS"
 fi
 
@@ -90,6 +92,16 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} up -d
   $DEPLOY_AFTER_SCRIPT
 "
+echo "COMMAND:
+       cd $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME
+       unzip $DEPLOY_ARCHIVE_NAME
+       rm -rf $DEPLOY_ARCHIVE_NAME${DYN_SCRIPT}
+       (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
+       docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} pull
+       docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} up -d
+       $DEPLOY_AFTER_SCRIPT
+     "
+echo "exit code $?"
 if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed to unpack, pull or deploy"
 	exit 1
