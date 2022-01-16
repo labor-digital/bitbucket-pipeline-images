@@ -58,6 +58,7 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   rm -rf $DEPLOY_PROJECT_NAME
   mkdir -p $DEPLOY_PROJECT_NAME
 "
+echo "  [?] SSH exit code $?"
 if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed preparing deployment folder"
 	exit 1
@@ -72,9 +73,9 @@ fi
 
 DYN_SCRIPT=""
 if [ ! -z "$DEPLOY_SERVER_ENV_FILE" ]; then
-  echo "  [?] Will attach contents of $DEPLOY_SERVER_ENV_FILE to $DEPLOY_DOCKER_DIR/.env..."
+  echo "  [?] Will attach contents of $DEPLOY_SERVER_ENV_FILE to $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME/.env..."
   DYN_SCRIPT="
-cat $DEPLOY_SERVER_ENV_FILE >> $DEPLOY_DOCKER_DIR/.env"
+cat $DEPLOY_SERVER_ENV_FILE >> $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME/.env"
 fi
 
 if [ ! -z "$DEPLOY_DOCKER_COMPOSE_OPTIONS" ]; then
@@ -92,16 +93,7 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} up -d
   $DEPLOY_AFTER_SCRIPT
 "
-echo "COMMAND:
-       cd $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME
-       unzip $DEPLOY_ARCHIVE_NAME
-       rm -rf $DEPLOY_ARCHIVE_NAME${DYN_SCRIPT}
-       (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
-       docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} pull
-       docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} up -d
-       $DEPLOY_AFTER_SCRIPT
-     "
-echo "exit code $?"
+echo "  [?] SSH exit code $?"
 if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed to unpack, pull or deploy"
 	exit 1
