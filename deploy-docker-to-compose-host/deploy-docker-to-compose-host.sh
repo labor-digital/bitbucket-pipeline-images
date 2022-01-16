@@ -19,6 +19,8 @@ DEPLOY_SSH_PORT=${DEPLOY_SSH_PORT:-"22"}
 DEPLOY_ADDITIONAL_FILES=${DEPLOY_ADDITIONAL_FILES:-""}
 DEPLOY_AFTER_SCRIPT=${DEPLOY_AFTER_SCRIPT:-"echo ''"}
 DEPLOY_ARCHIVE_NAME=${DEPLOY_ARCHIVE_NAME:-"deployment-$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_NAME.zip"}
+DEPLOY_SERVER_ENV_FILE=${DEPLOY_SERVER_ENV_FILE:-""}
+DEPLOY_DOCKER_COMPOSE_OPTIONS=${DEPLOY_DOCKER_COMPOSE_OPTIONS:-""}
 
 # Create the .env file
 echo "  [+] Creating .env file"
@@ -56,7 +58,7 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   rm -rf $DEPLOY_PROJECT_NAME
   mkdir -p $DEPLOY_PROJECT_NAME
 "
-if [ "$?" = 255 ] ; then
+if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed preparing deployment folder"
 	exit 1
 fi
@@ -68,17 +70,27 @@ if ! [ "$?" -eq "0" ]; then
 	exit 1
 fi
 
+DYN_SCRIPT=""
+if ! [ -z "$DEPLOY_SERVER_ENV_FILE" ]; then
+  DYN_SCRIPT="
+cat $DEPLOY_SERVER_ENV_FILE >> $DEPLOY_DOCKER_DIR/.env"
+fi
+
+if ! [ -z "$DEPLOY_DOCKER_COMPOSE_OPTIONS" ]; then
+  $DEPLOY_DOCKER_COMPOSE_OPTIONS = " $DEPLOY_DOCKER_COMPOSE_OPTIONS"
+fi
+
 echo "  [+] Unpacking and pulling deployment"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   cd $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME
   unzip $DEPLOY_ARCHIVE_NAME
-  rm -rf $DEPLOY_ARCHIVE_NAME
+  rm -rf $DEPLOY_ARCHIVE_NAME${DYN_SCRIPT}
   (test -x $DEPLOY_DOCKER_LOGIN_SCRIPT && $DEPLOY_DOCKER_LOGIN_SCRIPT)
-  docker-compose pull
-  docker-compose up -d
+  docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} pull
+  docker-compose${DEPLOY_DOCKER_COMPOSE_OPTIONS} up -d
   $DEPLOY_AFTER_SCRIPT
 "
-if [ "$?" = 255 ] ; then
+if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed to unpack, pull or deploy"
 	exit 1
 fi

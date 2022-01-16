@@ -122,6 +122,8 @@ The .env.template and .env.$DEPLOY_PROJECT_ENV will be merged into an .env file 
 - DEPLOY_ADDITIONAL_FILES (A comma separated list of files that should be transferred to the host server)
 - DEPLOY_AFTER_SCRIPT (A shell script to execute on the host machine after the deployment took place)
 - DEPLOY_ARCHIVE_NAME (_DEFAULT: "deployment-$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_NAME.zip"_, Name of the transfer archive)
+- DEPLOY_SERVER_ENV_FILE (The absolute path to an .env file on the server which will be appended to the generated .env file)
+- DEPLOY_DOCKER_COMPOSE_OPTIONS (Additional docker-compose arguments to use when booting the container)
 
 **Additional .env vars**
 You can add additional environment variables to the .env file while it is created by defining them like:
