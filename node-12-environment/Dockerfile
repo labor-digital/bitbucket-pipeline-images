@@ -7,6 +7,10 @@ MAINTAINER LABOR digital <info@labor.digital>
 
 LABEL description="Labor Digital Bitbucket Pipelines: Node.js Environment (12)"
 
+# Additional dependencies for our asset-builder
+# See https://github.com/imagemin/mozjpeg-bin/issues/67#issuecomment-950043912
+RUN apt-get update && apt-get install nasm zlib1g-dev
+
 RUN npm install -g npm-cli-login
 
 COPY npm-login.sh /opt/npm-login.sh
