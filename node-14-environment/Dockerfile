@@ -9,7 +9,8 @@ LABEL description="Labor Digital Bitbucket Pipelines: Node.js Environment (14)"
 
 # Additional dependencies for our asset-builder
 # See https://github.com/imagemin/mozjpeg-bin/issues/67#issuecomment-950043912
-RUN apt-get update && apt-get install nasm zlib1g-dev
+
+RUN apt-get update && apt-get install -y nasm zlib1g-dev
 
 RUN npm install -g npm-cli-login
 
