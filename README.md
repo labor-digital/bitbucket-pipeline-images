@@ -336,7 +336,8 @@ All images contain the same scripts and setup, but differ in their installed nod
 
               
 ## deployment-tools
-Small debian image which contains curl, zip and open-ssh client
+Small debian image which contains curl, zip and open-ssh client.
+It also contains the [Doppler.com CLI](https://docs.doppler.com/docs/install-cli) already preinstalled.
 
 ##### bitbucket-pipelines.yml - SSH
 ```
