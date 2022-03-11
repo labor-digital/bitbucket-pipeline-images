@@ -119,11 +119,15 @@ The .env.template and .env.$DEPLOY_PROJECT_ENV will be merged into an .env file 
 - DEPLOY_PROJECT_NAME (_DEFAULT: "$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_ENV"_, The name of the project folder to create)
 - DEPLOY_SSH_USER (_DEFAULT_: "deployment", The SSH user to connect to on the host)
 - DEPLOY_SSH_PORT (_DEFAULT: "22", The SSH port on the host to connect to)
+- DEPLOY_SSH_FINGERPRINT (The Fingerprint of the SSH server. Useful if bitbucket can't connect to the server)
+- DEPLOY_SSH_KEY (The BASE64 encoded private key to use when connecting to the server)
 - DEPLOY_ADDITIONAL_FILES (A comma separated list of files that should be transferred to the host server)
 - DEPLOY_AFTER_SCRIPT (A shell script to execute on the host machine after the deployment took place)
 - DEPLOY_ARCHIVE_NAME (_DEFAULT: "deployment-$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_NAME.zip"_, Name of the transfer archive)
 - DEPLOY_SERVER_ENV_FILE (The absolute path to an .env file on the server which will be appended to the generated .env file)
 - DEPLOY_DOCKER_COMPOSE_OPTIONS (Additional docker-compose arguments to use when booting the container)
+- DEPLOY_DOPPLER_ENV_TOKEN (Can be a [Doppler.com CLI](https://docs.doppler.com/docs/install-cli) service token to fetch additional secrets from. The secrets will be added to the generated .env file)
+- DEPLOY_DOPPLER_ENV_OPTIONS (Additional options to pass to the doppler CLI when retrieving the secrets. The command looks like this: `doppler secrets download $DEPLOY_DOPPLER_ENV_OPTIONS --no-file --format env >> .env`)
 
 **Additional .env vars**
 You can add additional environment variables to the .env file while it is created by defining them like:

@@ -67,3 +67,12 @@ done
 
 # Write the .env file
 echo "$out" > .env
+
+# Add doppler vars to env
+if [ ! -z "$2" ]; then
+  dopplerToken=$2
+  echo $dopplerToken | doppler configure set token --scope /
+
+  echo "  [+] Injecting doppler secrets"
+  doppler secrets download $3 --no-file --format env >> .env
+fi

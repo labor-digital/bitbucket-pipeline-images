@@ -16,15 +16,19 @@ DEPLOY_PROJECT_ENV=${DEPLOY_PROJECT_ENV:-"prod"}
 DEPLOY_PROJECT_NAME=${DEPLOY_PROJECT_NAME:-"$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_ENV"}
 DEPLOY_SSH_USER=${DEPLOY_SSH_USER:-"deployment"}
 DEPLOY_SSH_PORT=${DEPLOY_SSH_PORT:-"22"}
+DEPLOY_SSH_FINGERPRINT=${DEPLOY_SSH_FINGERPRINT:-""}
+DEPLOY_SSH_KEY=${DEPLOY_SSH_KEY:-""}
 DEPLOY_ADDITIONAL_FILES=${DEPLOY_ADDITIONAL_FILES:-""}
 DEPLOY_AFTER_SCRIPT=${DEPLOY_AFTER_SCRIPT:-"echo ''"}
 DEPLOY_ARCHIVE_NAME=${DEPLOY_ARCHIVE_NAME:-"deployment-$BITBUCKET_REPO_SLUG-$DEPLOY_PROJECT_NAME.zip"}
 DEPLOY_SERVER_ENV_FILE=${DEPLOY_SERVER_ENV_FILE:-""}
+DEPLOY_DOPPLER_ENV_TOKEN=${DEPLOY_DOPPLER_ENV_TOKEN:-""}
+DEPLOY_DOPPLER_ENV_OPTIONS=${DEPLOY_DOPPLER_ENV_OPTIONS:-""}
 DEPLOY_DOCKER_COMPOSE_OPTIONS=${DEPLOY_DOCKER_COMPOSE_OPTIONS:-""}
 
 # Create the .env file
 echo "  [+] Creating .env file"
-/opt/makeProdEnv.sh $DEPLOY_PROJECT_ENV
+/opt/makeProdEnv.sh $DEPLOY_PROJECT_ENV "$DEPLOY_DOPPLER_ENV_TOKEN" "$DEPLOY_DOPPLER_ENV_OPTIONS"
 
 # Add required files to zip
 echo "  [+] Packing zip"
@@ -50,6 +54,18 @@ if [ ! -z "$DEPLOY_ADDITIONAL_FILES" ]; then
   done
 fi
 
+if [ ! -z "$DEPLOY_SSH_FINGERPRINT" ]; then
+  echo "  [+] Will use provided ssh fingerprint..."
+  mkdir -p ~/.ssh
+  echo $DEPLOY_SSH_FINGERPRINT >> ~/.ssh/known_hosts
+fi
+
+if [ ! -z "$DEPLOY_SSH_KEY" ]; then
+  echo "  [+] Will use provided ssh key (Note: The value MUST be base64 encoded!)..."
+  mkdir -p ~/.ssh
+  (umask 077 ; echo $DEPLOY_SSH_KEY | base64 --decode > ~/.ssh/id_rsa)
+fi
+
 echo "  [+] Preparing deployment folder ($DEPLOY_SSH_USER) on $DEPLOY_SSH_HOST:$DEPLOY_SSH_PORT"
 ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   mkdir -p $DEPLOY_DOCKER_DIR
@@ -57,7 +73,6 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   rm -rf $DEPLOY_PROJECT_NAME
   mkdir -p $DEPLOY_PROJECT_NAME
 "
-echo "  [?] SSH exit code $?"
 if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed preparing deployment folder"
 	exit 1
@@ -72,13 +87,13 @@ fi
 
 DYN_SCRIPT="echo ''"
 if [ ! -z "$DEPLOY_SERVER_ENV_FILE" ]; then
-  echo "  [?] Will attach contents of $DEPLOY_SERVER_ENV_FILE to $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME/.env..."
+  echo "  [+] Will attach contents of $DEPLOY_SERVER_ENV_FILE to $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME/.env..."
   DYN_SCRIPT="
 cat $DEPLOY_SERVER_ENV_FILE >> $DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME/.env" || exit 1
 fi
 
 if [ ! -z "$DEPLOY_DOCKER_COMPOSE_OPTIONS" ]; then
-  echo "  [?] Will use custom docker-compose options: $DEPLOY_DOCKER_COMPOSE_OPTIONS"
+  echo "  [+] Will use custom docker-compose options: $DEPLOY_DOCKER_COMPOSE_OPTIONS"
   $DEPLOY_DOCKER_COMPOSE_OPTIONS = " $DEPLOY_DOCKER_COMPOSE_OPTIONS"
 fi
 
@@ -94,7 +109,6 @@ ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   $DEPLOY_AFTER_SCRIPT
 "
 ECD=$?
-echo "  [?] SSH exit code $ECD"
 if ! [ "$ECD" -eq "0" ]; then
 	echo "  [!] Failed to unpack, pull or deploy"
 	exit 1
