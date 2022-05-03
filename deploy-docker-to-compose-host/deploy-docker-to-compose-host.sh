@@ -69,7 +69,7 @@ if [ ! -z "$DEPLOY_SSH_KEY" ]; then
 fi
 
 echo "  [+] Preparing deployment folder ($DEPLOY_SSH_USER) on $DEPLOY_SSH_HOST:$DEPLOY_SSH_PORT"
-ssh $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
+ssh $SSH_IDENTITY_FILE $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST -p $DEPLOY_SSH_PORT "
   mkdir -p $DEPLOY_DOCKER_DIR
   cd $DEPLOY_DOCKER_DIR
   rm -rf $DEPLOY_PROJECT_NAME
@@ -81,7 +81,7 @@ if ! [ "$?" -eq "0" ]; then
 fi
 
 echo "  [+] Copy archive to deployment folder"
-scp -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME"
+scp $SSH_IDENTITY_FILE -P $DEPLOY_SSH_PORT "$DEPLOY_ARCHIVE_NAME" $DEPLOY_SSH_USER@$DEPLOY_SSH_HOST:"$DEPLOY_DOCKER_DIR/$DEPLOY_PROJECT_NAME"
 if ! [ "$?" -eq "0" ]; then
 	echo "  [!] Failed to copy the archive"
 	exit 1
