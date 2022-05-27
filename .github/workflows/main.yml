@@ -32,7 +32,7 @@ jobs:
       # composer-2-install
       - name: Build and push composer-2-install
         run: |
-          cd composer-install
+          cd composer-2-install
           docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:composer-2-install
           docker push labordigital/bitbucket-pipeline-images:composer-2-install
 
