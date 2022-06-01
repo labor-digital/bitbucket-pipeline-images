@@ -21,6 +21,10 @@ ECR_URL=${DEPLOY_TO_ECS_ECR_URL:-$AWS_ECR_DEFAULT_URL}
 DOCKER_IMAGE=${DEPLOY_TO_ECS_ECR_IMAGE:-$PROJECT_NAME}
 DOCKER_TAG=${DEPLOY_TO_ECS_ECR_TAG:-$AWS_ECR_DEFAULT_TAG_PREFIX$BITBUCKET_COMMIT}
 
+# Remove potentially existing files -> this may happen if multiple containers are deployed in the same step.
+rm -rf task-definition-image.json
+rm -rf task-definition.json
+
 #eval $(aws ecr get-login --region $ECR_REGION --no-include-email)
 aws ecs describe-task-definition --region $ECS_REGION --task-definition $DEPLOY_TO_ECS_ECS_TASK --query 'taskDefinition.{networkMode:networkMode,family:family,volumes:volumes,taskRoleArn:taskRoleArn,executionRoleArn:executionRoleArn,containerDefinitions:containerDefinitions}' > task-definition.json
 aws ecs describe-task-definition --region $ECS_REGION --task-definition $DEPLOY_TO_ECS_ECS_TASK --query 'taskDefinition.containerDefinitions[0].image' > task-definition-image.json
