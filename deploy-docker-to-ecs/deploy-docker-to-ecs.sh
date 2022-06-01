@@ -30,11 +30,11 @@ aws ecs describe-task-definition --region $ECS_REGION --task-definition $DEPLOY_
 aws ecs describe-task-definition --region $ECS_REGION --task-definition $DEPLOY_TO_ECS_ECS_TASK --query 'taskDefinition.containerDefinitions[0].image' > task-definition-image.json
 cat task-definition-image.json
 cat task-definition.json
-echo "SED 1: s/'$ECR_URL'\/'$DOCKER_IMAGE'://g"
+echo 'SED 1: s/'$ECR_URL'\/'$DOCKER_IMAGE'://g'
 sed -i -- 's/'$ECR_URL'\/'$DOCKER_IMAGE'://g' task-definition-image.json
-echo "SED 2: s/QUOT//g"
+echo 'SED 2: s/QUOT//g'
 sed -i -- 's/"//g' task-definition-image.json
-echo "SED 3: s/'$ECR_URL'\/'$DOCKER_IMAGE':'$(cat task-definition-image.json)'/'$ECR_URL'\/'$DOCKER_IMAGE':'$DOCKER_TAG'/g"
+echo 'SED 3: s/'$ECR_URL'\/'$DOCKER_IMAGE':'$(cat task-definition-image.json)'/'$ECR_URL'\/'$DOCKER_IMAGE':'$DOCKER_TAG'/g'
 sed -i -- 's/'$ECR_URL'\/'$DOCKER_IMAGE':'$(cat task-definition-image.json)'/'$ECR_URL'\/'$DOCKER_IMAGE':'$DOCKER_TAG'/g' task-definition.json
 aws ecs register-task-definition --region $ECS_REGION --cli-input-json file://task-definition.json
 aws ecs update-service --region $ECS_REGION --cluster $DEPLOY_TO_ECS_ECS_CLUSTER --service $DEPLOY_TO_ECS_ECS_SERVICE --task-definition $DEPLOY_TO_ECS_ECS_TASK:$(aws ecs describe-task-definition --region $ECS_REGION --task-definition $DEPLOY_TO_ECS_ECS_TASK --query 'taskDefinition.revision')
