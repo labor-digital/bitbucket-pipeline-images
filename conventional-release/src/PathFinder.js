@@ -98,9 +98,7 @@ module.exports = class PathFinder {
 		};
 
 		// Option 1:
-		console.log("TEST", srcDir);
 		if (srcDir) {
-			console.log("TEST", path.join(result.cwd, srcDir));
 			findConfigFiles(path.join(result.cwd, srcDir));
 		}
 
