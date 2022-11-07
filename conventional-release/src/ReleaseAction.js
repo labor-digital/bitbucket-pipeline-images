@@ -33,7 +33,7 @@ module.exports = class ReleaseAction {
 			dryRun: cmd.dryRun === true,
 			branch: (typeof cmd.branch === "undefined" ? "master" : cmd.branch)
 		};
-		const releaseElements = PathFinder.findReleaseElements(true);
+		const releaseElements = PathFinder.findReleaseElements(true, cmd.srcDir);
 
 		// Make changelog path relative
 		const rootDirectory = releaseElements.git === null ? releaseElements.config : releaseElements.git;

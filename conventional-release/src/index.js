@@ -30,5 +30,6 @@ program
 	.option("--release-as <type>", "can be used to manually bump the version to patch, minor or major", /major|minor|patch/)
 	.option("--branch <branch>", "the branch where to commit the changes to. Default is \"master\"")
 	.option("--ci-integration", "DEPRECATED: does nothing")
+	.option("--src-dir", "The relative path of the folder where we can find a package.json or composer.json")
 	.action(ReleaseAction.handle)
 	.parse(process.argv);

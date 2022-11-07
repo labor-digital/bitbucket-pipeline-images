@@ -25,15 +25,18 @@ module.exports = class PathFinder {
 	 * like the .git directory or the package.json in.
 	 *
 	 * Option 1:
-	 * There is a package.json / composer.json in the current directory -> use this directory
+	 * There is a package.json / composer.json in the directory 'srcDir' which we got as param -> use this directory
 	 *
 	 * Option 2:
-	 * Check if there is an src directory inside the current directory and look if we find the files there
+	 * There is a package.json / composer.json in the current directory -> use this directory
 	 *
 	 * Option 3:
-	 * Traverse the path upwards until we find a package.json / composer.json file
+	 * Check if there is an src directory inside the current directory and look if we find the files there
 	 *
 	 * Option 4:
+	 * Traverse the path upwards until we find a package.json / composer.json file
+	 *
+	 * Option 5:
 	 * If no file was found in option 2, check if we can find a package json in a current app's
 	 * root / app / src directories
 	 *
@@ -42,7 +45,7 @@ module.exports = class PathFinder {
 	 * @param {boolean} [ignoreMissingGit] If set to true there will be no error thrown if result.git directory is empty
 	 * @returns {{cwd: string, git: string|null, appApp: string|null, appSrc: string|null, packageJson: string|null, composerJson: string|null, changelogMd: string|null, config: string|null, appRoot: string|null}}
 	 */
-	static findReleaseElements(ignoreMissingGit) {
+	static findReleaseElements(ignoreMissingGit, srcDir = null) {
 		const result = {
 			cwd: PathFinder.unifyPath(process.cwd()),
 			appRoot: null,
@@ -95,21 +98,30 @@ module.exports = class PathFinder {
 		};
 
 		// Option 1:
-		findConfigFiles(result.cwd);
+		if (srcDir) {
+			findConfigFiles(path.join(result.cwd, srcDir));
+		}
 
 		// Option 2:
+		if (result.config === null) {
+			findConfigFiles(result.cwd);
+		}
+
+		// Option 3:
 		if (result.config === null) {
 			const srcPath = path.join(result.cwd, "src");
 			if(fs.existsSync(srcPath)) findConfigFiles(srcPath);
 		}
 
-		// Option 3:
-		PathFinder.traversePathUpwards(result.cwd, (directory) => {
-			findConfigFiles(directory);
-			if (result.packageJson !== null || result.composerJson !== null) return true;
-		});
-
 		// Option 4:
+		if (result.config === null) {
+			PathFinder.traversePathUpwards(result.cwd, (directory) => {
+				findConfigFiles(directory);
+				if (result.packageJson !== null || result.composerJson !== null) return true;
+			});
+		}
+
+		// Option 5:
 		if (result.config === null || result.packageJson === null && result.composerJson === null) {
 			[result.appRoot, result.appApp, result.appSrc].forEach(testDir => {
 				if (testDir === null || result.packageJson !== null || result.composerJson !== null) return;
