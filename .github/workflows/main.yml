@@ -94,6 +94,11 @@ jobs:
           cd node-14-environment
           docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-14-environment
           docker push labordigital/bitbucket-pipeline-images:node-14-environment
+      - name: Build and push node-16-environment
+        run: |
+          cd node-16-environment
+          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-16-environment
+          docker push labordigital/bitbucket-pipeline-images:node-16-environment
         
       # npm-run-build
       - name: Build and push npm-run-build
