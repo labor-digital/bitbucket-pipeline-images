@@ -63,20 +63,6 @@ jobs:
           cd deploy-docker-to-compose-host
           docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:deploy-docker-to-compose-host
           docker push labordigital/bitbucket-pipeline-images:deploy-docker-to-compose-host
-
-      # deploy-via-update-cloudformation-parameter
-      - name: Build and push deploy-via-update-cloudformation-parameter
-        run: |
-          cd deploy-via-update-cloudformation-parameter
-          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:deploy-via-update-cloudformation-parameter
-          docker push labordigital/bitbucket-pipeline-images:deploy-via-update-cloudformation-parameter
-
-      # inject-aws-ecs-startup-script
-      - name: Build and push inject-aws-ecs-startup-script
-        run: |
-          cd inject-aws-ecs-startup-script
-          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
-          docker push labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
   
       # node-environment
       - name: Build and push node-14-environment
