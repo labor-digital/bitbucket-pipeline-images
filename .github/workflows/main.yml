@@ -79,16 +79,6 @@ jobs:
           docker push labordigital/bitbucket-pipeline-images:inject-aws-ecs-startup-script
   
       # node-environment
-      - name: Build and push node-environment
-        run: |
-          cd node-environment
-          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-environment
-          docker push labordigital/bitbucket-pipeline-images:node-environment
-      - name: Build and push node-12-environment
-        run: |
-          cd node-12-environment
-          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-12-environment
-          docker push labordigital/bitbucket-pipeline-images:node-12-environment
       - name: Build and push node-14-environment
         run: |
           cd node-14-environment
