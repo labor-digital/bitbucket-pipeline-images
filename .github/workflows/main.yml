@@ -80,6 +80,11 @@ jobs:
           cd node-18-environment
           docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-18-environment
           docker push labordigital/bitbucket-pipeline-images:node-18-environment
+      - name: Build and push node-20-environment
+        run: |
+          cd node-20-environment
+          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:node-20-environment
+          docker push labordigital/bitbucket-pipeline-images:node-20-environment
         
       # npm-run-build
       - name: Build and push npm-run-build
