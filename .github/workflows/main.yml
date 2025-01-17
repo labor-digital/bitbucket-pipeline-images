@@ -92,10 +92,3 @@ jobs:
           cd npm-run-build
           docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:npm-run-build
           docker push labordigital/bitbucket-pipeline-images:npm-run-build
-
-      # sentry-release
-      - name: Build and push sentry-release
-        run: |
-          cd sentry-release
-          docker build . --file Dockerfile --tag labordigital/bitbucket-pipeline-images:sentry-release
-          docker push labordigital/bitbucket-pipeline-images:sentry-release
