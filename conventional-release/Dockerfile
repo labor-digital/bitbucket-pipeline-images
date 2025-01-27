@@ -22,3 +22,6 @@ RUN cd /opt/conventional-release \
 
 COPY release.sh /opt/release.sh
 RUN chmod +x /opt/release.sh
+
+COPY release.sh /opt/simple-release.sh
+RUN chmod +x /opt/simple-release.sh
