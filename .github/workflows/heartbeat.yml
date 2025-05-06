@@ -5,9 +5,6 @@ name: Heartbeat
 on:
   schedule:
     - cron: '0 2 */5 * *'
-  push:
-    branches:
-      - master
 
 jobs:
   report:
