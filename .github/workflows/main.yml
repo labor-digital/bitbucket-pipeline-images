@@ -36,19 +36,7 @@ jobs:
           file: ./build-docker-and-push-ecr/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # composer-install
-      - name: Build and push composer-install
-        uses: docker/build-push-action@v5
-        with:
-          context: ./composer-install/.
-          push: true
-          tags: labordigital/bitbucket-pipeline-images:composer-install
-          platforms: linux/amd64,linux/arm64
-          file: ./composer-install/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-        
+      
       # composer-2-install
       - name: Build and push composer-2-install
         uses: docker/build-push-action@v5
@@ -61,6 +49,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # composer-install
+      - name: Build and push composer-install
+        uses: docker/build-push-action@v5
+        with:
+          context: ./composer-install/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:composer-install
+          platforms: linux/amd64,linux/arm64
+          file: ./composer-install/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       # conventional-release
       - name: Build and push conventional-release
         uses: docker/build-push-action@v5
@@ -70,6 +70,18 @@ jobs:
           tags: labordigital/bitbucket-pipeline-images:conventional-release
           platforms: linux/amd64,linux/arm64
           file: ./conventional-release/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      # deploy-docker-to-compose-host
+      - name: Build and push deploy-docker-to-compose-host
+        uses: docker/build-push-action@v5
+        with:
+          context: ./deploy-docker-to-compose-host/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:deploy-docker-to-compose-host
+          platforms: linux/amd64,linux/arm64
+          file: ./deploy-docker-to-compose-host/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -96,16 +108,16 @@ jobs:
           file: ./deployment-tools/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
-      # deploy-docker-to-compose-host
-      - name: Build and push deploy-docker-to-compose-host
+      
+      # jest-puppeteer-node20
+      - name: Build and push jest-puppeteer-node20
         uses: docker/build-push-action@v5
         with:
-          context: ./deploy-docker-to-compose-host/.
+          context: ./jest-puppeteer-node20/.
           push: true
-          tags: labordigital/bitbucket-pipeline-images:deploy-docker-to-compose-host
+          tags: labordigital/bitbucket-pipeline-images:jest-puppeteer-node20
           platforms: linux/amd64,linux/arm64
-          file: ./deploy-docker-to-compose-host/Dockerfile
+          file: ./jest-puppeteer-node20/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
   
