@@ -12,9 +12,11 @@ NPM_REGISTRY_USER=${NPM_REGISTRY_USER:-$NPM_DEFAULT_REGISTRY_USER}
 NPM_REGISTRY_PW=${NPM_REGISTRY_PW:-$NPM_DEFAULT_REGISTRY_PW}
 NPM_REGISTRY_EMAIL=${NPM_REGISTRY_EMAIL:-$NPM_DEFAULT_REGISTRY_EMAIL}
 
-echo "Logging into registry..."
-npm set registry "https://$NPM_REGISTRY_URL"
-npm-cli-login -u "$NPM_REGISTRY_USER" -p "$NPM_REGISTRY_PW" -r "https://$NPM_REGISTRY_URL" -e "$NPM_REGISTRY_EMAIL" --quotes --config-path=/root/.npmrc
+if [ "$NPM_REGISTRY_URL" != "" ]; then
+  echo "Logging into registry..."
+  npm set registry "https://$NPM_REGISTRY_URL"
+  npm-cli-login -u "$NPM_REGISTRY_USER" -p "$NPM_REGISTRY_PW" -r "https://$NPM_REGISTRY_URL" -e "$NPM_REGISTRY_EMAIL" --quotes --config-path=/root/.npmrc
+fi
 
 echo "Requesting oAuth token..."
 export access_token=$(curl -s -X POST -u "${GIT_PUSH_BACK_OAUTH_ID}:${GIT_PUSH_BACK_OAUTH_SECRET}" \
