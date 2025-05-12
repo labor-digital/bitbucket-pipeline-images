@@ -7,7 +7,7 @@ MAINTAINER LABOR digital <info@labor.digital>
 
 LABEL description="Labor Digital Bitbucket Pipelines: Conventional Release"
 
-RUN apk --update add curl jq git bash
+RUN apk --update add curl jq git bash git-lfs
 
 RUN rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apk/*
@@ -23,5 +23,5 @@ RUN cd /opt/conventional-release \
 COPY release.sh /opt/release.sh
 RUN chmod +x /opt/release.sh
 
-COPY release.sh /opt/simple-release.sh
+COPY simple-release.sh /opt/simple-release.sh
 RUN chmod +x /opt/simple-release.sh
