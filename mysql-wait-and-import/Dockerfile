@@ -2,6 +2,9 @@ FROM alpine:3
 
 LABEL description="Labor Digital Bitbucket Pipelines: MySQL wait and import"
 
+# Install netcat
+RUN apk update && apk add netcat-openbsd
+
 # Install bash
 RUN apk update && apk add bash
 
