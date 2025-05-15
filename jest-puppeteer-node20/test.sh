@@ -8,6 +8,7 @@ TEST_BASE_URL=${TEST_BASE_URL:-"https://host.docker.internal"}
 if [ "$TEST_HOST_IP" != "" ] && [ "$TEST_HOST_NAME" != "" ]; then
   echo "${TEST_HOST_IP} ${TEST_HOST_NAME}" >> /etc/hosts
 fi
+cat /etc/hosts
 
 # Install the dependencies and call the action
 cd /app
