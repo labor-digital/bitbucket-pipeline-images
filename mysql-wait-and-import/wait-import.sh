@@ -8,10 +8,10 @@ MYSQL_USER=${MYSQL_USER:-"test"}
 MYSQL_PASS=${MYSQL_PASS:-"test"}
 MYSQL_IMPORT_FILE_PATH=${MYSQL_IMPORT_FILE_PATH:-"./tests/test-data/dump.sql"}
 
-echo ">> Waiting for mysql to start"
-nc -z "${MYSQL_HOST}" ${MYSQL_PORT}
-while ! nc -z "${MYSQL_HOST}" ${MYSQL_PORT}; do
-  sleep 3
-done
+#echo ">> Waiting for mysql to start"
+#nc -z "${MYSQL_HOST}" ${MYSQL_PORT}
+#while ! nc -z "${MYSQL_HOST}" ${MYSQL_PORT}; do
+#  sleep 3
+#done
 
 mysql --host="${MYSQL_HOST}" --user="${MYSQL_USER}" --password="${MYSQL_PASS}" -f "${MYSQL_DATABASE}" < ${MYSQL_IMPORT_FILE_PATH}
