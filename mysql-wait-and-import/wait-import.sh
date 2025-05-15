@@ -2,13 +2,15 @@
 
 # Perpare variables
 MYSQL_HOST=${MYSQL_HOST:-"localhost"}
+MYSQL_PORT=${MYSQL_PORT:-"3306"}
 MYSQL_DATABASE=${MYSQL_DATABASE:-"test"}
 MYSQL_USER=${MYSQL_USER:-"test"}
 MYSQL_PASS=${MYSQL_PASS:-"test"}
 MYSQL_IMPORT_FILE_PATH=${MYSQL_IMPORT_FILE_PATH:-"./tests/test-data/dump.sql"}
 
 echo ">> Waiting for mysql to start"
-while ! nc -z $MYSQL_HOST 3306; do
+nc -z "${MYSQL_HOST}" ${MYSQL_PORT}
+while ! nc -z "${MYSQL_HOST}" ${MYSQL_PORT}; do
   sleep 3
 done
 
