@@ -54,5 +54,6 @@ fi
 if [ "$BUILD_AND_PUSH_SAVE_PATH" != "" ]; then
   echo "Saving image for later use..."
   rm -rf $BUILD_AND_PUSH_SAVE_PATH
+  mkdir -p $(dirname $BUILD_AND_PUSH_SAVE_PATH)
   docker save --output $BUILD_AND_PUSH_SAVE_PATH $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG
 fi
