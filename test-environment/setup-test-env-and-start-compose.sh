@@ -10,7 +10,7 @@ if [ "$TEST_ENV_IMAGE_LOAD_PATH" != "" ] && [ -f "$TEST_ENV_IMAGE_LOAD_PATH" ]; 
 fi
 
 echo "Starting the compose"
-docker-compose up -d -f "${TEST_ENV_COMPOSE_FILE_PATH}"
+docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d
 
 echo "Sleep for some time to let the compose settle"
 sleep 25
