@@ -8,14 +8,17 @@ BUILD_AND_PUSH_DOCKER_FILE=${BUILD_AND_PUSH_DOCKER_FILE:-"Dockerfile"}
 BUILD_AND_PUSH_BUILD=${BUILD_AND_PUSH_BUILD:-"yes"}
 BUILD_AND_PUSH_PUSH=${BUILD_AND_PUSH_PUSH:-"yes"}
 
+# Extracts the base repository url from the image
+EXTRACTED_DOCKER_URL=$(echo $BUILD_AND_PUSH_IMAGE| cut -d'/' -f 1)
+
 echo "Performing AWS ECR login... ($BUILD_AND_PUSH_REGION)"
-eval $(aws ecr get-login --region $BUILD_AND_PUSH_REGION --no-include-email)
+aws ecr get-login-password --region $BUILD_AND_PUSH_REGION | docker login --username AWS --password-stdin ${EXTRACTED_DOCKER_URL}
 
 # Extracts the repository name from the image, so we can  push it with all tags
 EXTRACTED_TAG=$(echo $BUILD_AND_PUSH_IMAGE| cut -d':' -f 2)
 
 if [ "$BUILD_AND_PUSH_IMAGE" == "$EXTRACTED_TAG" ]; then
-EXTRACTED_TAG=
+  EXTRACTED_TAG=
 fi
 
 BUILD_AND_PUSH_TAG=${TAG:-"${EXTRACTED_TAG:-"DEFAULT_TAG"}"}
