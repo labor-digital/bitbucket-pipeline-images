@@ -1,6 +1,6 @@
 const jestPuppeteerTeardown = require('jest-environment-puppeteer/teardown');
 const fs = require("node:fs");
-const HttpProxyAgent = require("http-proxy-agent");
+const HttpsProxyAgent = require("https-proxy-agent");
 
 module.exports = async function (globalConfig, projectConfig) {
     await jestPuppeteerTeardown(globalConfig, projectConfig);
@@ -42,13 +42,13 @@ module.exports = async function (globalConfig, projectConfig) {
             ]
         };
 
-        const url = "http://api.bitbucket.org/2.0/repositories/"+process.env.BITBUCKET_REPO_OWNER+"/"+process.env.BITBUCKET_REPO_SLUG+"/commit/"+process.env.BITBUCKET_COMMIT+"/reports/jest-snapshots-001";
+        const url = "https://api.bitbucket.org/2.0/repositories/"+process.env.BITBUCKET_REPO_OWNER+"/"+process.env.BITBUCKET_REPO_SLUG+"/commit/"+process.env.BITBUCKET_COMMIT+"/reports/jest-snapshots-001";
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
             },
-            agent: new HttpProxyAgent.HttpProxyAgent('http://host.docker.internal:29418'),
+            agent: new HttpsProxyAgent.HttpsProxyAgent('http://host.docker.internal:29418'),
             body: JSON.stringify(data),
         });
         if (!response.ok) {
