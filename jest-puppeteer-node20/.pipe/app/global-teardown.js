@@ -1,6 +1,6 @@
 const jestPuppeteerTeardown = require('jest-environment-puppeteer/teardown');
 const fs = require("node:fs");
-const HttpsProxyAgent = require("https-proxy-agent");
+const HttpProxyAgent = require("http-proxy-agent");
 
 module.exports = async function (globalConfig, projectConfig) {
     await jestPuppeteerTeardown(globalConfig, projectConfig);
@@ -48,7 +48,7 @@ module.exports = async function (globalConfig, projectConfig) {
             headers: {
                 "Content-Type": "application/json",
             },
-            agent: new HttpsProxyAgent('http://host.docker.internal:29418'),
+            agent: new HttpProxyAgent.HttpProxyAgent('http://host.docker.internal:29418'),
             body: JSON.stringify(data),
         });
         if (!response.ok) {
