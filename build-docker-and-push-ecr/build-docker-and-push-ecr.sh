@@ -48,6 +48,7 @@ fi
 if [ "$BUILD_AND_PUSH_PUSH" == "yes" ]; then
   echo "Pushing image..."
   docker push $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG
+  docker image tag $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG_LATEST
   docker push $BUILD_AND_PUSH_REPO:$BUILD_AND_PUSH_TAG_LATEST
 fi
 
