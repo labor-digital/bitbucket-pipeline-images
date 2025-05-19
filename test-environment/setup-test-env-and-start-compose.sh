@@ -8,10 +8,6 @@ if [ "$TEST_ENV_IMAGE_LOAD_PATH" != "" ] && [ -f "$TEST_ENV_IMAGE_LOAD_PATH" ]; 
   echo "Loading image from file..."
   docker load --input $TEST_ENV_IMAGE_LOAD_PATH
 fi
-if [ "$TEST_ENV_IMAGE_LOAD_PATH" != "" ]; then
-  echo "Loading image from file..."
-  docker load --input $TEST_ENV_IMAGE_LOAD_PATH
-fi
 
 echo "Starting the compose"
 docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d
