@@ -1,0 +1,61 @@
+const jestPuppeteerTeardown = require('jest-environment-puppeteer/teardown');
+const fs = require("node:fs");
+
+module.exports = async function (globalConfig, projectConfig) {
+    await jestPuppeteerTeardown(globalConfig, projectConfig);
+
+    try {
+        if (!process.env.BITBUCKET_REPO_OWNER || !process.env.BITBUCKET_REPO_SLUG || !process.env.BITBUCKET_COMMIT || !process.env.BITBUCKET_DEFAULT_BOT_USER || !process.env.BITBUCKET_DEFAULT_BOT_PASS) {
+            console.log("We're not running in bitbucket pipelines, so we skip reporting.");
+            return;
+        }
+
+        const testResultsJson = JSON.parse(fs.readFileSync(process.env.TEST_ROOT_DIR + '/tests/test-reports/jest-ctrf.json').toString());
+        let data = {
+            "title": "Jest Image Snapshot Testing",
+            "details": "Jest details",
+            "report_type": "TEST",
+            "reporter": "jest-snapshots",
+            "result": testResultsJson.results.summary.tests == testResultsJson.results.summary.passed ? "PASSED" : "FAILED",
+            "data": [
+                {
+                    "title": "Duration",
+                    "type": "DURATION",
+                    "value": testResultsJson.results.summary.stop - testResultsJson.results.summary.start
+                },
+                {
+                    "title": "Test count",
+                    "type": "NUMBER",
+                    "value": testResultsJson.results.summary.tests
+                },
+                {
+                    "title": "Tests passed",
+                    "type": "NUMBER",
+                    "value": testResultsJson.results.summary.passed
+                },
+                {
+                    "title": "Tests failed",
+                    "type": "NUMBER",
+                    "value": testResultsJson.results.summary.failed
+                }
+            ]
+        };
+
+        const url = "https://api.bitbucket.org/2.0/repositories/"+process.env.BITBUCKET_REPO_OWNER+"/"+process.env.BITBUCKET_REPO_SLUG+"/commit/"+process.env.BITBUCKET_COMMIT+"/reports/jest-snapshots-001";
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Basic ' + btoa(process.env.BITBUCKET_DEFAULT_BOT_USER + ':' + process.env.BITBUCKET_DEFAULT_BOT_PASS)
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+    } catch (error) {
+        console.log("Error in teardown, but we will not throw an error, because the tests should be responsible of the exit code.");
+    }
+};
