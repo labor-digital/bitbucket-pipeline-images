@@ -47,8 +47,9 @@ module.exports = async function (globalConfig, projectConfig) {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': 'Basic ' + btoa(process.env.BITBUCKET_DEFAULT_BOT_USER+':'+process.env.BITBUCKET_DEFAULT_BOT_PASS)
             },
-            agent: new HttpsProxyAgent.HttpsProxyAgent('http://host.docker.internal:29418'),
+            // agent: new HttpsProxyAgent.HttpsProxyAgent('http://host.docker.internal:29418'),
             body: JSON.stringify(data),
         });
         if (!response.ok) {
