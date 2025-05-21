@@ -1,6 +1,5 @@
 const jestPuppeteerTeardown = require('jest-environment-puppeteer/teardown');
 const fs = require("node:fs");
-const HttpsProxyAgent = require("https-proxy-agent");
 
 module.exports = async function (globalConfig, projectConfig) {
     await jestPuppeteerTeardown(globalConfig, projectConfig);
@@ -49,7 +48,6 @@ module.exports = async function (globalConfig, projectConfig) {
                 "Content-Type": "application/json",
                 'Authorization': 'Basic ' + btoa(process.env.BITBUCKET_DEFAULT_BOT_USER+':'+process.env.BITBUCKET_DEFAULT_BOT_PASS)
             },
-            // agent: new HttpsProxyAgent.HttpsProxyAgent('http://host.docker.internal:29418'),
             body: JSON.stringify(data),
         });
         if (!response.ok) {
