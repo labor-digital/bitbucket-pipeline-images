@@ -52,7 +52,7 @@ module.exports = class ReleaseAction {
 			releaseAs: cmd.releaseAs,
 			gitTagFallback: true,
 			dryRun: config.dryRun,
-			message: "chore(release): %s" + (cmd.noSkipCi !== true ? " [SKIP CI]" : ""),
+			message: "chore(release): %s" + (cmd.skipCi === true ? " [SKIP CI]" : ""),
 			skip: {}
 		};
 		if (config.debug === true) environment.verbose = true;
