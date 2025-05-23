@@ -28,6 +28,7 @@ program
 	.option("--composer-publish", "publishes the package to the satis repository")
 	.option("--remove-release-tag", "removes the git tag called \"release\" from the git history. Useful if you want to use it to trigger yur pipelines with it")
 	.option("--no-skip-ci", "do not add [SKIP CI] to the pushback commit message")
+	.option("--skip-on-tag", "Skip everything, if any tag is already present on the HEAD commit")
 	.option("--release-as <type>", "can be used to manually bump the version to patch, minor or major", /major|minor|patch/)
 	.option("--branch <branch>", "the branch where to commit the changes to. Default is \"master\"")
 	.option("--ci-integration", "DEPRECATED: does nothing")

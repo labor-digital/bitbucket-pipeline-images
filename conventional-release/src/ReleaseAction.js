@@ -40,6 +40,30 @@ module.exports = class ReleaseAction {
 		const infile = releaseElements.changelogMd;
 		const infileRelative = path.relative(releaseElements.config, infile);
 
+		// Try to read tags on current commit, if skipOnTag option is set
+		if (cmd.skipOnTag === true && releaseElements.git !== null) {
+			console.log("Try to read tags on current commit...");
+			const command = "cd \"" + releaseElements.git + "\" && git describe --exact-match --tags";
+			let tagAvailable = false;
+			try {
+				cp.execSync(command, {"stdio": "ignore"});
+				// If the command has failed we don't have a tag on the current commit,
+				// so we only set this here to true as we now know, that we have one,
+				// as we're still in the try block
+				tagAvailable = true;
+			} catch (e) {
+				// For completeness and readability
+				tagAvailable = false;
+			}
+
+			if (tagAvailable) {
+				console.log("Skip the whole process without error, as we have a tag present on this commit and --skip-on-tag option is set.");
+				process.exit(0);
+			} else {
+				console.log("No tags found on this commit... Proceed.");
+			}
+		}
+
 		// Apply some fixes and load standard-version
 		ReleaseAction._applyAdjustmentsToStandardVersionBump();
 		ReleaseAction._applyRewriteOfChangelogTemplatesForBitbucket();
