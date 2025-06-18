@@ -8,4 +8,4 @@ ADD app/global-teardown.js /app
 # Use bash as our default shell
 SHELL ["/bin/bash", "-c"]
 
-ENTRYPOINT ["/opt/test.sh"]
+ENTRYPOINT ["/opt/test-debug.sh"]
