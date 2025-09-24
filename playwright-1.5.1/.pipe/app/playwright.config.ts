@@ -4,5 +4,8 @@ export default defineConfig({
   ...common,
   
   workers: 1,
-  globalTeardown: "./global-teardown.ts"
+  reporter: [
+    ...common['reporter'],
+    ['./pipes-reporter.ts'],
+  ],
 });
