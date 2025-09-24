@@ -70,16 +70,16 @@ jobs:
           cache-to: type=gha,mode=max
       
       # node-environment
-      - name: Build and push node-14-environment
-        uses: docker/build-push-action@v5
-        with:
-          context: ./node-14-environment/.
-          push: true
-          tags: labordigital/bitbucket-pipeline-images:node-14-environment
-          platforms: linux/amd64,linux/arm64
-          file: ./node-14-environment/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+#      - name: Build and push node-14-environment
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: ./node-14-environment/.
+#          push: true
+#          tags: labordigital/bitbucket-pipeline-images:node-14-environment
+#          platforms: linux/amd64,linux/arm64
+#          file: ./node-14-environment/Dockerfile
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
       - name: Build and push node-16-environment
         uses: docker/build-push-action@v5
         with:

@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 async function globalTeardown() {
 	try {
 		if (!process.env.BITBUCKET_REPO_OWNER || !process.env.BITBUCKET_REPO_SLUG || !process.env.BITBUCKET_COMMIT) {
