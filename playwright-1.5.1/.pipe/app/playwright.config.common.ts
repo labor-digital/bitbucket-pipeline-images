@@ -6,6 +6,6 @@ export default defineConfig({
   workers: 1,
   reporter: [
     ...base['reporter'],
-    ['./pipes-reporter.ts'],
+    ['/app/pipes-reporter.ts'],
   ],
 });
