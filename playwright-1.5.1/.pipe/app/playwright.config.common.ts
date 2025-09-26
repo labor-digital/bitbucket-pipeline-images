@@ -1,11 +1,11 @@
-import common from './playwright.config.common';
+import base from './playwright.config.base';
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
-  ...common,
+  ...base,
   
   workers: 1,
   reporter: [
-    ...common['reporter'],
+    ...base['reporter'],
     ['./pipes-reporter.ts'],
   ],
 });
