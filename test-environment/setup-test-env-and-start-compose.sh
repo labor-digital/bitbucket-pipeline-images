@@ -11,6 +11,3 @@ fi
 
 echo "Starting the compose"
 docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d
-
-echo "Sleep for some time to let the compose settle"
-sleep 25
