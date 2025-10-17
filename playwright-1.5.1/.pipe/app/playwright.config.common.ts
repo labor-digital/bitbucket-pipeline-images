@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   ...base,
   
-  workers: 1,
+  workers: 5,
   reporter: [
     ...base['reporter'],
     ['/app/pipes-reporter.ts'],
