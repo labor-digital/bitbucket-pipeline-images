@@ -11,3 +11,4 @@ fi
 
 echo "Starting the compose"
 docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d --wait
+docker ps -a
