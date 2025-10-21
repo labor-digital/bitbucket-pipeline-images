@@ -10,4 +10,4 @@ if [ "$TEST_ENV_IMAGE_LOAD_PATH" != "" ] && [ -f "$TEST_ENV_IMAGE_LOAD_PATH" ]; 
 fi
 
 echo "Starting the compose"
-docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d --wait
+docker-compose -f "${TEST_ENV_COMPOSE_FILE_PATH}" up -d --wait --wait-timeout 120
