@@ -1,4 +1,4 @@
-FROM atlassian/default-image:4
+FROM atlassian/default-image:5
 
 MAINTAINER LABOR digital <info@labor.digital>
 
