@@ -59,6 +59,28 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
+      # playwright-1.56.1
+      - name: Build and push playwright-1.56.1
+        uses: docker/build-push-action@v5
+        with:
+          context: ./playwright-1.56.1/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.56.1
+          platforms: linux/amd64,linux/arm64
+          file: ./playwright-1.56.1/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push playwright-1.56.1-pipe
+        uses: docker/build-push-action@v5
+        with:
+          context: ./playwright-1.56.1/.pipe/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.56.1-pipe
+          platforms: linux/amd64,linux/arm64
+          file: ./playwright-1.56.1/.pipe/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
       # jest-puppeteer-node20
       - name: Build and push jest-puppeteer-node20
         uses: docker/build-push-action@v5
