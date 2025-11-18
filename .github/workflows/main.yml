@@ -37,25 +37,25 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
-      # playwright-1.5.1
-      - name: Build and push playwright-1.5.1
+      # playwright-1.55.1
+      - name: Build and push playwright-1.55.1
         uses: docker/build-push-action@v5
         with:
-          context: ./playwright-1.5.1/.
+          context: ./playwright-1.55.1/.
           push: true
-          tags: labordigital/bitbucket-pipeline-images:playwright-1.5.1
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.55.1
           platforms: linux/amd64,linux/arm64
-          file: ./playwright-1.5.1/Dockerfile
+          file: ./playwright-1.55.1/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build and push playwright-1.5.1-pipe
+      - name: Build and push playwright-1.55.1-pipe
         uses: docker/build-push-action@v5
         with:
-          context: ./playwright-1.5.1/.pipe/.
+          context: ./playwright-1.55.1/.pipe/.
           push: true
-          tags: labordigital/bitbucket-pipeline-images:playwright-1.5.1-pipe
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.55.1-pipe
           platforms: linux/amd64,linux/arm64
-          file: ./playwright-1.5.1/.pipe/Dockerfile
+          file: ./playwright-1.55.1/.pipe/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
