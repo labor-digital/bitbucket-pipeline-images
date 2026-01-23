@@ -25,6 +25,28 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
+      # playwright-1.57.0
+      - name: Build and push playwright-1.57.0
+        uses: docker/build-push-action@v5
+        with:
+          context: ./playwright-1.57.0/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.57.0
+          platforms: linux/amd64,linux/arm64
+          file: ./playwright-1.57.0/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push playwright-1.57.0-pipe
+        uses: docker/build-push-action@v5
+        with:
+          context: ./playwright-1.57.0/.pipe/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:playwright-1.57.0-pipe
+          platforms: linux/amd64,linux/arm64
+          file: ./playwright-1.57.0/.pipe/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
       # test-environment
       - name: Build and push test-environment
         uses: docker/build-push-action@v5
