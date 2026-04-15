@@ -46,7 +46,7 @@ module.exports = async function (globalConfig, projectConfig) {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
-                'Authorization': 'Basic ' + btoa(process.env.BITBUCKET_DEFAULT_BOT_USER+':'+process.env.BITBUCKET_DEFAULT_BOT_TOKEN)
+                'Authorization': 'Basic ' + btoa(process.env.BITBUCKET_DEFAULT_BOT_USER_EMAIL+':'+process.env.BITBUCKET_DEFAULT_BOT_TOKEN)
             },
             body: JSON.stringify(data),
         });
