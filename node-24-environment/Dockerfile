@@ -1,6 +1,6 @@
-FROM node:22
+FROM node:24
 
-LABEL description="Labor Digital Bitbucket Pipelines: Node.js Environment (22)"
+LABEL description="Labor Digital Bitbucket Pipelines: Node.js Environment (24)"
 
 # Additional dependencies for our asset-builder
 # See https://github.com/imagemin/mozjpeg-bin/issues/67#issuecomment-950043912
