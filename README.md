@@ -156,7 +156,6 @@ The following Env vars need to/may be set:
 #### IMPORTANT - Composer V2
 By default, we will use composer v1 to perform the installation. If you want to work with version 2 of composer,
 replace the image tag to use: `labordigital/bitbucket-pipeline-images:composer-2-install` instead.
-The composer v1 image is also available under the explicit tag `labordigital/bitbucket-pipeline-images:composer-1-install`.
 
 **Required:**
 
