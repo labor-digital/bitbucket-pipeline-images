@@ -1,7 +1,7 @@
 # TAG: 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:node-16-environment
 # Build: docker build -t 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:node-16-environment .
 # Push: docker push 848331400135.dkr.ecr.eu-central-1.amazonaws.com/labor-prod-pipelines:node-16-environment
-FROM node:16
+FROM node:16-bullseye
 
 LABEL description="Labor Digital Bitbucket Pipelines: Node.js Environment (16)"
 
