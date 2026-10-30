@@ -388,6 +388,16 @@ jobs:
           file: ./composer-2-install/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Build and push composer-2-install-pipe
+        uses: docker/build-push-action@v5
+        with:
+          context: ./composer-2-install/.pipe/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:composer-2-install-pipe
+          platforms: linux/amd64,linux/arm64
+          file: ./composer-2-install/.pipe/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # composer-install
       - name: Build and push composer-install
@@ -398,6 +408,16 @@ jobs:
           tags: labordigital/bitbucket-pipeline-images:composer-install
           platforms: linux/amd64,linux/arm64
           file: ./composer-install/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build and push composer-install-pipe
+        uses: docker/build-push-action@v5
+        with:
+          context: ./composer-install/.pipe/.
+          push: true
+          tags: labordigital/bitbucket-pipeline-images:composer-install-pipe
+          platforms: linux/amd64,linux/arm64
+          file: ./composer-install/.pipe/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
