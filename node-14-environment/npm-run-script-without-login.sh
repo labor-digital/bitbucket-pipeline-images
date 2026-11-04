@@ -2,6 +2,7 @@
 
 # Perpare variables
 NODE_WORKING_DIR=${NODE_WORKING_DIR:-$BITBUCKET_CLONE_DIR}
+chmod -R ugo=rwX $NODE_WORKING_DIR
 
 # Install the dependencies and call the action
 cd $NODE_WORKING_DIR
