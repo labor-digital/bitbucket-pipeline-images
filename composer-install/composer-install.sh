@@ -39,7 +39,7 @@ rm -rf $COMPOSER_INSTALL_SOURCE_DIR/*
 cd $COMPOSER_INSTALL_WORKING_DIR/
 
 # Composer install
-composer install --ignore-platform-reqs --no-progress --optimize-autoloader --no-interaction --verbose
+composer install --ignore-platform-reqs --no-progress --optimize-autoloader --no-interaction --verbose || exit 1
 
 # Copy back for artifacts
 cp -R -p ./* $COMPOSER_INSTALL_DESTINATION_DIR/
