@@ -1,4 +1,4 @@
-FROM composer:2
+FROM composer:2.11.1
 
 MAINTAINER LABOR digital <info@labor.digital>
 
